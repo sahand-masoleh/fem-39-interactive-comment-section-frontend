@@ -1,0 +1,15 @@
+$c-p-moderate-blue: #5457b6; //button (inactive)
+$c-p-soft-red: #ed6468; //button (inactive)
+$c-p-light-grayish-blue: #c3c4ef; //button (active), voting icons (inactive)
+$c-p-pale-red: #ffb8bb; //button (active)
+
+$c-n-dark-blue: #324152; //editing text
+$c-n-grayish-blue: #67727e; //main text
+$c-n-light-gray: #eaecf1; //
+$c-n-very-light-gray: #f5f6fa; //main background
+$c-n-white: #ffffff;
+
+$max-width: 45rem;
+@mixin max-width {
+	max-width: $max-width;
+}
