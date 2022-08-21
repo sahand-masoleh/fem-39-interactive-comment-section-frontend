@@ -1,39 +1,28 @@
 import "./App.scss";
 
-import { useState } from "react";
-import { useQuery } from "react-query";
+import { useContext } from "react";
 
-import Post from "./components/Post";
+import { PostsContext } from "@contexts/PostsContext";
+
+import Post from "@components/Post/Post";
 
 function App() {
-	const [postsMap, setPostsMap] = useState();
+	const { isLoading, error, posts } = useContext(PostsContext);
 
-	const { isLoading, error, isSuccess } = useQuery("repoData", async () => {
-		let res = await fetch("http://localhost:4000/posts");
-		res = await res.json();
-		handleData(res);
-	});
-
-	function handleData(posts) {
-		const map = posts.map((post) => (
-			<Post
-				key={post.id}
-				id={post.id}
-				depth={post.depth}
-				name={post.name}
-				date={post.date}
-				text={post.text}
-				votes={post.votes}
-			/>
-		));
-		setPostsMap(map);
+	function postsMap() {
+		const map = posts.map((post) => <Post key={post.id} data={post} />);
+		return map;
 	}
 
-	if (isLoading) return <p>loading...</p>;
+	return (
+		<div className="app">
+			{isLoading && <p>loading...</p>}
 
-	if (error) return <p>error fetching data!</p>;
+			{error && <p>error fetching data!</p>}
 
-	if (isSuccess) return <div className="app">{postsMap}</div>;
+			{posts && <main className="main">{postsMap()}</main>}
+		</div>
+	);
 }
 
 export default App;

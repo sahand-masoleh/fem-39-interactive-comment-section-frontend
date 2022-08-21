@@ -18,6 +18,14 @@ export default defineConfig({
 			{ find: "@", replacement: path.resolve(__dirname, "src") },
 			{ find: "@styles", replacement: path.resolve(__dirname, "src/styles") },
 			{ find: "@assets", replacement: path.resolve(__dirname, "src/assets") },
+			{
+				find: "@components",
+				replacement: path.resolve(__dirname, "src/components"),
+			},
+			{
+				find: "@contexts",
+				replacement: path.resolve(__dirname, "src/contexts"),
+			},
 		],
 	},
 });

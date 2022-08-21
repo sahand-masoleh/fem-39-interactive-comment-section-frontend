@@ -23,10 +23,9 @@ body {
 	background-color: $c-n-very-light-gray;
 }
 
-.app {
+.main {
+	@include max-width;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	gap: 1rem;
 	padding: 2rem 1rem;
 }
