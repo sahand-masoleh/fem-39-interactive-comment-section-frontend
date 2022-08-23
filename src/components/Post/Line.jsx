@@ -1,8 +1,16 @@
+import "./Line.scss";
 import { useContext } from "react";
 import { PostsContext } from "@contexts/PostsContext";
 
 function Line({ parentId }) {
-	const { handleHover, handleHide, hovered } = useContext(PostsContext);
+	const { handleHover, handleHide, hovered, handleFocus } =
+		useContext(PostsContext);
+
+	function handleClick() {
+		handleHide(parentId, true);
+		handleFocus(parentId);
+		document.getElementById(parentId).scrollIntoView({ behavior: "smooth" });
+	}
 
 	return (
 		<div
@@ -11,7 +19,7 @@ function Line({ parentId }) {
 			}`}
 			onMouseEnter={() => handleHover(parentId, true)}
 			onMouseLeave={() => handleHover(parentId, false)}
-			onClick={() => handleHide(parentId, true)}
+			onClick={handleClick}
 		></div>
 	);
 }

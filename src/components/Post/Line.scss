@@ -1,0 +1,38 @@
+@use "@styles/common" as *;
+
+.line-container {
+	grid-area: lines;
+	display: flex;
+}
+
+.line {
+	width: 0.2rem;
+	flex-shrink: 0;
+	margin: 0 0.5rem;
+	box-sizing: content-box;
+	border: 0.4rem solid $c-n-very-light-gray;
+	border-top: none;
+	border-bottom: none;
+
+	&--unhovered {
+		background-color: $c-n-light-gray;
+	}
+
+	&--hovered {
+		background-color: $c-p-moderate-blue;
+	}
+
+	&--unselectable {
+		color: $c-n-light-gray;
+		background-image: repeating-linear-gradient(
+			currentColor,
+			currentColor 0.5rem,
+			transparent 0.5rem,
+			transparent 1rem
+		);
+	}
+
+	&:hover:not(&--unselectable) {
+		cursor: pointer;
+	}
+}

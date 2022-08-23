@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 import { useQuery } from "react-query";
 
 export const PostsContext = createContext();
@@ -7,6 +7,7 @@ export function PostsContextProvider({ children }) {
 	const [posts, setPosts] = useState([]);
 	const [hovered, setHovered] = useState(null);
 	const [hidden, setHidden] = useState([]);
+	const [focused, setFocused] = useState(null);
 
 	const { isLoading, error } = useQuery("repoData", async () => {
 		let res = await fetch("http://localhost:4000/posts");
@@ -33,6 +34,14 @@ export function PostsContextProvider({ children }) {
 		}
 	}
 
+	function handleFocus(parentId) {
+		if (parentId) {
+			setFocused(parentId);
+		} else {
+			setFocused(null);
+		}
+	}
+
 	return (
 		<PostsContext.Provider
 			value={{
@@ -43,6 +52,8 @@ export function PostsContextProvider({ children }) {
 				handleHover,
 				hidden,
 				handleHide,
+				focused,
+				handleFocus,
 			}}
 		>
 			{children}

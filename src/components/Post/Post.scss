@@ -1,10 +1,15 @@
 @use "@styles/common" as *;
 
 .post-container {
-	display: flex;
+	display: grid;
+	grid-template-areas:
+		"lines post"
+		"lines reply";
+	grid-template-columns: min-content auto;
 }
 
 .post {
+	grid-area: post;
 	width: 100%;
 	padding: 1.5rem;
 	border-radius: 0.5rem;
@@ -19,6 +24,18 @@
 	row-gap: 1rem;
 	column-gap: 1.5rem;
 	position: relative;
+
+	&--focused {
+		animation: focus 2s linear;
+		outline: 0.25rem solid transparent;
+
+		@keyframes focus {
+			20%,
+			80% {
+				outline-color: $c-p-moderate-blue;
+			}
+		}
+	}
 
 	&__voting {
 		grid-area: voting;
@@ -105,6 +122,21 @@
 			color: $c-p-light-grayish-blue;
 		}
 	}
+
+	&__scroll {
+		position: absolute;
+		height: 1rem;
+		margin: 0.25rem;
+		aspect-ratio: 1/1;
+		background: none;
+		color: $c-n-light-gray;
+		border: none;
+
+		&:hover {
+			cursor: pointer;
+			color: $c-p-moderate-blue;
+		}
+	}
 }
 
 .action {
@@ -170,38 +202,6 @@
 			cursor: pointer;
 			color: $c-p-moderate-blue;
 		}
-	}
-}
-
-.line {
-	width: 0.2rem;
-	flex-shrink: 0;
-	margin: 0 0.5rem;
-	box-sizing: content-box;
-	border: 0.4rem solid $c-n-very-light-gray;
-	border-top: none;
-	border-bottom: none;
-
-	&--unhovered {
-		background-color: $c-n-light-gray;
-	}
-
-	&--hovered {
-		background-color: $c-p-moderate-blue;
-	}
-
-	&--unselectable {
-		color: $c-n-light-gray;
-		background-image: repeating-linear-gradient(
-			currentColor,
-			currentColor 0.5rem,
-			transparent 0.5rem,
-			transparent 1rem
-		);
-	}
-
-	&:hover:not(&--unselectable) {
-		cursor: pointer;
 	}
 }
 

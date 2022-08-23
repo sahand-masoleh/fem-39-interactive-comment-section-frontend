@@ -7,6 +7,7 @@ import { PostsContext } from "@contexts/PostsContext";
 import { ReactComponent as ReplyIcon } from "@assets/icon-reply.svg";
 import { ReactComponent as EditIcon } from "@assets/icon-edit.svg";
 import { ReactComponent as DeleteIcon } from "@assets/icon-delete.svg";
+import { ReactComponent as UpIcon } from "@assets/icon-up.svg";
 
 import Line from "./Line";
 import Info from "./Info";
@@ -26,7 +27,7 @@ function Post({
 	replies,
 	path,
 }) {
-	const { hidden, handleHide } = useContext(PostsContext);
+	const { hidden, handleHide, focused, handleFocus } = useContext(PostsContext);
 	const [isReplying, setIsReplying] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
@@ -41,6 +42,13 @@ function Post({
 		setIsDeleting((prevIsDeleting) => !prevIsDeleting);
 	}
 
+	function goToParent() {
+		document
+			.getElementById(parent_id)
+			.scrollIntoView({ behavior: "smooth", block: "center" });
+		handleFocus(parent_id);
+	}
+
 	const lineMap = () => {
 		return new Array(depth)
 			.fill(null)
@@ -49,9 +57,12 @@ function Post({
 
 	if (!hidden.some((e) => path.includes(e)))
 		return (
-			<div className="post-container">
-				{lineMap()}
-				<div className="post">
+			<div id={id} className="post-container">
+				<div className="line-container">{lineMap()}</div>
+				<div
+					className={`post ${focused == id && "post--focused"}`}
+					onAnimationEnd={() => handleFocus(null)}
+				>
 					<Voting votes={votes} />
 					<Info name={name} date={date} />
 					<div className="post__action-container">
@@ -69,6 +80,11 @@ function Post({
 						<p className="post__more" onClick={() => handleHide(id, false)}>
 							{replies} {replies == 1 ? "reply" : "replies"}
 						</p>
+					)}
+					{parent_id && (
+						<button className="post__scroll" onClick={goToParent}>
+							<UpIcon title="Go to parent" />
+						</button>
 					)}
 				</div>
 				{isReplying && <Reply parentId={id} />}
