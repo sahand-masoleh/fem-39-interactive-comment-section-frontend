@@ -10,7 +10,8 @@ $c-n-very-light-gray: #f5f6fa; //main background
 $c-n-white: #ffffff;
 
 $max-width: 45rem;
-@mixin max-width {
-	max-width: $max-width;
+@mixin max-width($width: $max-width) {
+	max-width: $width;
 	margin: 0 auto;
+	padding: 0 1rem;
 }

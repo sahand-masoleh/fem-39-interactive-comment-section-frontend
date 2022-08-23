@@ -15,14 +15,21 @@ import Voting from "./Voting";
 import Text from "./Text";
 import Reply from "./Reply";
 
-function Post(props) {
+function Post({
+	id,
+	parent_id,
+	depth,
+	name,
+	date,
+	text,
+	votes,
+	replies,
+	path,
+}) {
 	const { hidden, handleHide } = useContext(PostsContext);
 	const [isReplying, setIsReplying] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
-
-	// from the DB
-	const { id, parent_id, depth, name, date, text, votes } = props.data;
 
 	function handleReply() {
 		setIsReplying((prevIsReplying) => !prevIsReplying);
@@ -37,10 +44,10 @@ function Post(props) {
 	const lineMap = () => {
 		return new Array(depth)
 			.fill(null)
-			.map((_, i) => <Line key={"" + id + i} parentId={parent_id} />);
+			.map((_, i) => <Line key={"" + id + i} parentId={path[i]} />);
 	};
 
-	if (!hidden.includes(parent_id))
+	if (!hidden.some((e) => path.includes(e)))
 		return (
 			<div className="post-container">
 				{lineMap()}
@@ -60,7 +67,7 @@ function Post(props) {
 					<Text text={text} isEditing={isEditing} />
 					{hidden.includes(id) && (
 						<p className="post__more" onClick={() => handleHide(id, false)}>
-							Show Replies
+							{replies} {replies == 1 ? "reply" : "replies"}
 						</p>
 					)}
 				</div>

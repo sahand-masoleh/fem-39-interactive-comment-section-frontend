@@ -1,0 +1,29 @@
+@use "@styles/common" as *;
+
+.nav-container {
+	background-color: $c-n-grayish-blue;
+}
+
+.nav {
+	@include max-width;
+	padding-top: 1ch;
+	padding-bottom: 1ch;
+
+	&__link {
+		font-weight: 700;
+		color: $c-n-very-light-gray;
+		text-decoration: none;
+	}
+
+	&__button {
+		background-color: transparent;
+		border: none;
+		font-weight: 500;
+		color: $c-n-white;
+
+		&:hover {
+			cursor: pointer;
+			color: $c-n-light-gray;
+		}
+	}
+}

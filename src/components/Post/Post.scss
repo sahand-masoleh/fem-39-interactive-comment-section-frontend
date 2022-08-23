@@ -1,15 +1,10 @@
 @use "@styles/common" as *;
 
 .post-container {
-	display: grid;
-	grid-template-areas:
-		"line post"
-		"line reply";
-	grid-template-columns: min-content auto;
+	display: flex;
 }
 
 .post {
-	grid-area: post;
 	width: 100%;
 	padding: 1.5rem;
 	border-radius: 0.5rem;
@@ -179,10 +174,9 @@
 }
 
 .line {
-	grid-area: line;
 	width: 0.2rem;
 	flex-shrink: 0;
-	margin: 0 1.5rem;
+	margin: 0 0.5rem;
 	box-sizing: content-box;
 	border: 0.4rem solid $c-n-very-light-gray;
 	border-top: none;
@@ -200,9 +194,9 @@
 		color: $c-n-light-gray;
 		background-image: repeating-linear-gradient(
 			currentColor,
-			currentColor 0.25rem,
-			transparent 0.25rem,
-			transparent 0.5rem
+			currentColor 0.5rem,
+			transparent 0.5rem,
+			transparent 1rem
 		);
 	}
 
@@ -221,6 +215,7 @@
 	display: flex;
 	align-items: flex-start;
 	gap: 1rem;
+	margin-top: 0.5rem;
 
 	&__avatar {
 		@extend .post__avatar;
