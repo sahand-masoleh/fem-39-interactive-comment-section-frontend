@@ -9,7 +9,9 @@ function Line({ parentId }) {
 	function handleClick() {
 		handleHide(parentId, true);
 		handleFocus(parentId);
-		document.getElementById(parentId).scrollIntoView({ behavior: "smooth" });
+		document
+			.getElementById(parentId)
+			.scrollIntoView({ behavior: "smooth", block: "nearest" });
 	}
 
 	return (

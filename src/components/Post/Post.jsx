@@ -3,6 +3,7 @@ import "./Post.scss";
 import { useState, useContext } from "react";
 
 import { PostsContext } from "@contexts/PostsContext";
+import { AuthContext } from "@contexts/AuthContext";
 
 import { ReactComponent as ReplyIcon } from "@assets/icon-reply.svg";
 import { ReactComponent as EditIcon } from "@assets/icon-edit.svg";
@@ -19,8 +20,10 @@ import Reply from "./Reply";
 function Post({
 	id,
 	parent_id,
+	user_id,
 	depth,
 	name,
+	avatar_url,
 	date,
 	text,
 	votes,
@@ -28,6 +31,7 @@ function Post({
 	path,
 }) {
 	const { hidden, handleHide, focused, handleFocus } = useContext(PostsContext);
+	const { id: currentUser } = useContext(AuthContext);
 	const [isReplying, setIsReplying] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
@@ -52,7 +56,7 @@ function Post({
 	const lineMap = () => {
 		return new Array(depth)
 			.fill(null)
-			.map((_, i) => <Line key={"" + id + i} parentId={path[i]} />);
+			.map((_, i) => <Line key={path[i]} parentId={path[i]} />);
 	};
 
 	if (!hidden.some((e) => path.includes(e)))
@@ -60,20 +64,30 @@ function Post({
 			<div id={id} className="post-container">
 				<div className="line-container">{lineMap()}</div>
 				<div
-					className={`post ${focused == id && "post--focused"}`}
+					className={`post ${focused == id ? "post--focused" : ""}`}
 					onAnimationEnd={() => handleFocus(null)}
 				>
 					<Voting votes={votes} />
-					<Info name={name} date={date} />
+					<Info
+						user_id={user_id}
+						name={name}
+						date={date}
+						avatarUrl={avatar_url}
+						isCurrentUser={user_id === currentUser}
+					/>
 					<div className="post__action-container">
-						<Action
-							name="Delete"
-							onClick={handleDelete}
-							Icon={DeleteIcon}
-							isSecondary
-						/>
+						{user_id === currentUser && (
+							<>
+								<Action
+									name="Delete"
+									onClick={handleDelete}
+									Icon={DeleteIcon}
+									isSecondary
+								/>
+								<Action name="Edit" onClick={handleEdit} Icon={EditIcon} />
+							</>
+						)}
 						<Action name="Reply" onClick={handleReply} Icon={ReplyIcon} />
-						<Action name="Edit" onClick={handleEdit} Icon={EditIcon} />
 					</div>
 					<Text text={text} isEditing={isEditing} />
 					{hidden.includes(id) && (

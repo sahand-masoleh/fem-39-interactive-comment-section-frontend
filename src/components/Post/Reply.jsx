@@ -1,10 +1,11 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useContext } from "react";
 
-import Line from "./Line";
+import { AuthContext } from "@/contexts/AuthContext";
 
 function Reply({ parentId }) {
 	const [text, settext] = useState();
 	const textareaRef = useRef();
+	const { user } = useContext(AuthContext);
 
 	function handleTextEdit(event) {
 		const { value } = event.target;
@@ -21,11 +22,7 @@ function Reply({ parentId }) {
 			<div className="line line--unselectable"></div>
 			<div className="reply">
 				<div className="reply__avatar image">
-					<img
-						src="https://source.unsplash.com/random/64x64/?face"
-						alt="your avatar"
-						className="image__img"
-					/>
+					<img src={user.avatar_url} alt="your avatar" className="image__img" />
 				</div>
 				<textarea
 					className="post__text post__text--edit"

@@ -1,6 +1,5 @@
 import "./App.scss";
 import { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
 import { PostsContext } from "@contexts/PostsContext";
 
 import Nav from "@components/Nav/Nav";
@@ -15,8 +14,10 @@ function App() {
 				key={post.id}
 				id={post.id}
 				parent_id={post.parent_id}
+				user_id={post.user_id}
 				depth={post.depth}
 				name={post.name}
+				avatar_url={post.avatar_url}
 				date={post.date}
 				text={post.text}
 				votes={post.votes}

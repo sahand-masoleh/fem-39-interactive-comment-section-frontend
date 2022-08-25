@@ -1,25 +1,53 @@
 import "./Nav.scss";
-import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "@contexts/AuthContext";
 
-function Nav() {
-	const { user, getAuthLink } = useContext(AuthContext);
+import { ReactComponent as GithubLogo } from "@assets/logo-github.svg";
 
-	function handleLogin() {
-		const link = getAuthLink();
-		location.href = link;
+function Nav() {
+	const { getAuthLink, user, status } = useContext(AuthContext);
+
+	function renderElement() {
+		if (status === "loading") {
+			return (
+				<>
+					<GithubLogo
+						title="Github"
+						className="nav__avatar nav__avatar--loading"
+					/>
+					<a href={getAuthLink()} className="nav__text">
+						Checking...
+					</a>
+				</>
+			);
+		} else if (user) {
+			return (
+				<>
+					<div className="nav__avatar nav__avatar--round image">
+						<img
+							className="image__img"
+							src={user.avatar_url}
+							alt="user's avatar"
+						/>
+					</div>
+					<span className="nav__text">{user.name}</span>
+				</>
+			);
+		} else {
+			return (
+				<>
+					<GithubLogo title="Github" className="nav__avatar" />
+					<a href={getAuthLink()} className="nav__text">
+						Login via Github
+					</a>
+				</>
+			);
+		}
 	}
 
 	return (
 		<div className="nav-container">
-			<nav className="nav">
-				{!user && (
-					<button className="nav__button" onClick={handleLogin}>
-						Login via Github
-					</button>
-				)}
-			</nav>
+			<nav className="nav">{renderElement()}</nav>
 		</div>
 	);
 }

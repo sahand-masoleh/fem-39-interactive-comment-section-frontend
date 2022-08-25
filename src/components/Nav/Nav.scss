@@ -6,13 +6,21 @@
 
 .nav {
 	@include max-width;
-	padding-top: 1ch;
-	padding-bottom: 1ch;
+	height: 3rem;
+	display: flex;
+	align-items: center;
+	gap: 1ch;
 
-	&__link {
-		font-weight: 700;
-		color: $c-n-very-light-gray;
-		text-decoration: none;
+	&__avatar {
+		height: 2rem;
+		aspect-ratio: 1/1;
+		color: white;
+		transition: opacity 250ms;
+
+		&--round {
+			border-radius: 50%;
+			overflow: hidden;
+		}
 	}
 
 	&__button {
@@ -25,5 +33,12 @@
 			cursor: pointer;
 			color: $c-n-light-gray;
 		}
+	}
+
+	&__text {
+		font-weight: 500;
+		color: $c-n-very-light-gray;
+		text-decoration: none;
+		cursor: pointer;
 	}
 }

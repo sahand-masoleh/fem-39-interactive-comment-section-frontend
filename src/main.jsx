@@ -3,7 +3,8 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { PostsContextProvider } from "@contexts/PostsContext";
 import { AuthContextProvider } from "./contexts/AuthContext";
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 const queryClient = new QueryClient();
 
 import App from "./App";
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 					</BrowserRouter>
 				</PostsContextProvider>
 			</AuthContextProvider>
+			<ReactQueryDevtools />
 		</QueryClientProvider>
 	</React.StrictMode>
 );
