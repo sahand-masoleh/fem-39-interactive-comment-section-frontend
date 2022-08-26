@@ -25,6 +25,7 @@ body {
 
 .main {
 	@include max-width;
+	padding-bottom: 3rem;
 	display: flex;
 	flex-direction: column;
 }

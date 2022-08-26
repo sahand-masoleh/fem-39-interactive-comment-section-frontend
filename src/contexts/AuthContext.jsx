@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 import { nanoid } from "nanoid";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -26,7 +26,7 @@ export function AuthContextProvider({ children }) {
 		}
 	);
 
-	const mutation = useMutation(
+	const login = useMutation(
 		async (code) => {
 			const res = await fetch("http://localhost:4000/users/login", {
 				method: "POST",
@@ -64,7 +64,7 @@ export function AuthContextProvider({ children }) {
 		let savedState = sessionStorage.getItem("state");
 		if (!savedState || savedState !== state)
 			throw new Error("authetication unsuccessful");
-		mutation.mutate(code);
+		login.mutate(code);
 	}
 
 	return (

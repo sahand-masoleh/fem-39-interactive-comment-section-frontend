@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-function Text({ text, isEditing }) {
+function Text({ text, isEditing, isDeleted, handleSubmit }) {
 	const [editedText, setEditedText] = useState();
 	const textareaRef = useRef();
 
@@ -32,11 +32,24 @@ function Text({ text, isEditing }) {
 					ref={textareaRef}
 					onInput={resize}
 				/>
-				<button className="post__button">UPDATE</button>
+				<button
+					className="post__button"
+					onClick={() => handleSubmit(editedText)}
+				>
+					UPDATE
+				</button>
 			</>
 		);
 	} else {
-		return <p className="post__text post__text--normal">{text}</p>;
+		return (
+			<p
+				className={`post__text post__text--normal ${
+					isDeleted ? "post__text--deleted" : null
+				}`}
+			>
+				{isDeleted ? "[deleted]" : text}
+			</p>
+		);
 	}
 }
 export default Text;

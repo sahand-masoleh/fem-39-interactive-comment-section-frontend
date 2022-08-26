@@ -55,6 +55,10 @@
 		height: 2rem;
 		aspect-ratio: 1/1;
 		background-color: $c-n-light-gray;
+
+		&--empty {
+			color: $c-n-grayish-blue;
+		}
 	}
 
 	&__name {
@@ -98,6 +102,10 @@
 			border: none;
 			outline: 1px solid $c-n-dark-blue;
 			resize: none;
+		}
+
+		&--deleted {
+			font-style: italic;
 		}
 	}
 

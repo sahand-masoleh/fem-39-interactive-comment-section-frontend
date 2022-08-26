@@ -2,14 +2,14 @@ import { useState, useRef, useContext } from "react";
 
 import { AuthContext } from "@/contexts/AuthContext";
 
-function Reply({ parentId }) {
-	const [text, settext] = useState();
+function Reply({ handleSubmit }) {
+	const [input, setInput] = useState();
 	const textareaRef = useRef();
 	const { user } = useContext(AuthContext);
 
 	function handleTextEdit(event) {
 		const { value } = event.target;
-		settext(value);
+		setInput(value);
 	}
 
 	function resize() {
@@ -26,12 +26,15 @@ function Reply({ parentId }) {
 				</div>
 				<textarea
 					className="post__text post__text--edit"
-					value={text}
+					value={input}
 					onChange={handleTextEdit}
 					ref={textareaRef}
 					onInput={resize}
+					rows={1}
 				/>
-				<button className="post__button">Reply</button>
+				<button className="post__button" onClick={() => handleSubmit(input)}>
+					Reply
+				</button>
 			</div>
 		</div>
 	);

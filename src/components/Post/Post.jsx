@@ -22,28 +22,43 @@ function Post({
 	parent_id,
 	user_id,
 	depth,
-	name,
-	avatar_url,
+	name = user.name,
+	avatar_url = user.avatar_url,
 	date,
 	text,
 	votes,
 	replies,
 	path,
 }) {
-	const { hidden, handleHide, focused, handleFocus } = useContext(PostsContext);
-	const { id: currentUser } = useContext(AuthContext);
+	const { hidden, handleHide, focused, handleFocus, reply, remove, edit } =
+		useContext(PostsContext);
+	const { user } = useContext(AuthContext);
 	const [isReplying, setIsReplying] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 	const [isDeleting, setIsDeleting] = useState(false);
+	const isDeleted = user_id === 1;
 
 	function handleReply() {
 		setIsReplying((prevIsReplying) => !prevIsReplying);
 	}
+	function handleReplySubmit(text) {
+		reply(id, text);
+		handleReply();
+	}
 	function handleEdit() {
 		setIsEditing((prevIsEditing) => !prevIsEditing);
 	}
+	function handleEditSubmit(text) {
+		edit(id, text);
+		handleEdit();
+	}
 	function handleDelete() {
 		setIsDeleting((prevIsDeleting) => !prevIsDeleting);
+	}
+	function handleDeleteSubmit() {
+		remove(id);
+		// TODO: modal
+		// handleDelete()
 	}
 
 	function goToParent() {
@@ -73,23 +88,33 @@ function Post({
 						name={name}
 						date={date}
 						avatarUrl={avatar_url}
-						isCurrentUser={user_id === currentUser}
+						isCurrentUser={user_id === user?.id}
+						isDeleted={isDeleted}
 					/>
 					<div className="post__action-container">
-						{user_id === currentUser && (
+						{user_id === user?.id && (
 							<>
 								<Action
 									name="Delete"
-									onClick={handleDelete}
+									// TODO: modal
+									// onClick={handleDelete}
+									onClick={handleDeleteSubmit}
 									Icon={DeleteIcon}
 									isSecondary
 								/>
 								<Action name="Edit" onClick={handleEdit} Icon={EditIcon} />
 							</>
 						)}
-						<Action name="Reply" onClick={handleReply} Icon={ReplyIcon} />
+						{!isDeleted && (
+							<Action name="Reply" onClick={handleReply} Icon={ReplyIcon} />
+						)}
 					</div>
-					<Text text={text} isEditing={isEditing} />
+					<Text
+						text={text}
+						isEditing={isEditing}
+						isDeleted={isDeleted}
+						handleSubmit={handleEditSubmit}
+					/>
 					{hidden.includes(id) && (
 						<p className="post__more" onClick={() => handleHide(id, false)}>
 							{replies} {replies == 1 ? "reply" : "replies"}
@@ -101,7 +126,7 @@ function Post({
 						</button>
 					)}
 				</div>
-				{isReplying && <Reply parentId={id} />}
+				{isReplying && <Reply handleSubmit={handleReplySubmit} />}
 			</div>
 		);
 }
