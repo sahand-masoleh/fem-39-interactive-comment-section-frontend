@@ -1,14 +1,20 @@
 import "./Line.scss";
 import { useContext } from "react";
-import { PostsContext } from "@contexts/PostsContext";
+import {
+	HiddenContext,
+	HoveredContext,
+	FocusedContext,
+} from "@contexts/UIContexts";
 
 function Line({ parentId }) {
-	const { handleHover, handleHide, hovered, handleFocus } =
-		useContext(PostsContext);
+	const { handleHide } = useContext(HiddenContext);
+	const { hovered, handleHover } = useContext(HoveredContext);
+	const { handleFocus } = useContext(FocusedContext);
 
 	function handleClick() {
 		handleHide(parentId, true);
 		handleFocus(parentId);
+		handleHover(null);
 		document
 			.getElementById(parentId)
 			.scrollIntoView({ behavior: "smooth", block: "nearest" });

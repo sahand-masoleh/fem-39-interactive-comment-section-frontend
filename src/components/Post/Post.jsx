@@ -1,18 +1,15 @@
 import "./Post.scss";
 
-import { useState, useContext } from "react";
+import { useContext } from "react";
 
-import { PostsContext } from "@contexts/PostsContext";
+import { HiddenContext, FocusedContext } from "@contexts/UIContexts";
 import { AuthContext } from "@contexts/AuthContext";
 
-import { ReactComponent as ReplyIcon } from "@assets/icon-reply.svg";
-import { ReactComponent as EditIcon } from "@assets/icon-edit.svg";
-import { ReactComponent as DeleteIcon } from "@assets/icon-delete.svg";
 import { ReactComponent as UpIcon } from "@assets/icon-up.svg";
-
+import useActions from "./hooks/useActions";
 import Line from "./Line";
 import Info from "./Info";
-import Action from "./Action";
+import ActionContainer from "./ActionContainer";
 import Voting from "./Voting";
 import Text from "./Text";
 import Reply from "./Reply";
@@ -22,44 +19,28 @@ function Post({
 	parent_id,
 	user_id,
 	depth,
-	name = user.name,
-	avatar_url = user.avatar_url,
+	name,
+	avatar_url,
 	date,
 	text,
 	votes,
 	replies,
 	path,
 }) {
-	const { hidden, handleHide, focused, handleFocus, reply, remove, edit } =
-		useContext(PostsContext);
-	const { user } = useContext(AuthContext);
-	const [isReplying, setIsReplying] = useState(false);
-	const [isEditing, setIsEditing] = useState(false);
-	const [isDeleting, setIsDeleting] = useState(false);
-	const isDeleted = user_id === 1;
+	const { hidden, handleHide } = useContext(HiddenContext);
+	const isHidden = hidden.some((e) => path.includes(e));
+	const hasHidden = hidden?.includes(id);
 
-	function handleReply() {
-		setIsReplying((prevIsReplying) => !prevIsReplying);
-	}
-	function handleReplySubmit(text) {
-		reply(id, text);
-		handleReply();
-	}
-	function handleEdit() {
-		setIsEditing((prevIsEditing) => !prevIsEditing);
-	}
-	function handleEditSubmit(text) {
-		edit(id, text);
-		handleEdit();
-	}
-	function handleDelete() {
-		setIsDeleting((prevIsDeleting) => !prevIsDeleting);
-	}
-	function handleDeleteSubmit() {
-		remove(id);
-		// TODO: modal
-		// handleDelete()
-	}
+	const { focused, handleFocus } = useContext(FocusedContext);
+	const isFocused = focused === id;
+
+	const { user } = useContext(AuthContext);
+	const isCurrentUser = user_id === user?.id;
+
+	const { state, dispatch, handleReply, handleEdit, handleDelete } =
+		useActions();
+
+	const isDeleted = user_id === 1;
 
 	function goToParent() {
 		document
@@ -74,12 +55,12 @@ function Post({
 			.map((_, i) => <Line key={path[i]} parentId={path[i]} />);
 	};
 
-	if (!hidden.some((e) => path.includes(e)))
+	if (!isHidden)
 		return (
 			<div id={id} className="post-container">
 				<div className="line-container">{lineMap()}</div>
 				<div
-					className={`post ${focused == id ? "post--focused" : ""}`}
+					className={`post ${isFocused ? "post--focused" : ""}`}
 					onAnimationEnd={() => handleFocus(null)}
 				>
 					<Voting votes={votes} />
@@ -88,34 +69,21 @@ function Post({
 						name={name}
 						date={date}
 						avatarUrl={avatar_url}
-						isCurrentUser={user_id === user?.id}
+						isCurrentUser={isCurrentUser}
 						isDeleted={isDeleted}
 					/>
-					<div className="post__action-container">
-						{user_id === user?.id && (
-							<>
-								<Action
-									name="Delete"
-									// TODO: modal
-									// onClick={handleDelete}
-									onClick={handleDeleteSubmit}
-									Icon={DeleteIcon}
-									isSecondary
-								/>
-								<Action name="Edit" onClick={handleEdit} Icon={EditIcon} />
-							</>
-						)}
-						{!isDeleted && (
-							<Action name="Reply" onClick={handleReply} Icon={ReplyIcon} />
-						)}
-					</div>
+					<ActionContainer
+						isCurrentUser={isCurrentUser}
+						isDeleted={isDeleted}
+						dispatch={dispatch}
+					/>
 					<Text
 						text={text}
-						isEditing={isEditing}
-						isDeleted={isDeleted}
-						handleSubmit={handleEditSubmit}
+						isEditing={state.isEditing}
+						isDeleted={state.isDeleted}
+						handleSubmit={(text) => handleEdit(id, text)}
 					/>
-					{hidden.includes(id) && (
+					{hasHidden && (
 						<p className="post__more" onClick={() => handleHide(id, false)}>
 							{replies} {replies == 1 ? "reply" : "replies"}
 						</p>
@@ -126,7 +94,14 @@ function Post({
 						</button>
 					)}
 				</div>
-				{isReplying && <Reply handleSubmit={handleReplySubmit} />}
+				{state.isReplying && (
+					<Reply
+						handleSubmit={(text) => {
+							handleReply(id, text);
+						}}
+						avatar={user.avatar}
+					/>
+				)}
 			</div>
 		);
 }

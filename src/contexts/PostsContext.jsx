@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { AuthContext } from "./AuthContext";
@@ -6,9 +6,6 @@ import { AuthContext } from "./AuthContext";
 export const PostsContext = createContext();
 
 export function PostsContextProvider({ children }) {
-	const [hovered, setHovered] = useState(null);
-	const [hidden, setHidden] = useState([]);
-	const [focused, setFocused] = useState(null);
 	const queryClient = useQueryClient();
 	const { user } = useContext(AuthContext);
 
@@ -27,33 +24,6 @@ export function PostsContextProvider({ children }) {
 			staleTime: Infinity,
 		}
 	);
-
-	function handleHover(parentId, bool) {
-		if (bool) {
-			setHovered(parentId);
-		} else {
-			setHovered(null);
-		}
-	}
-
-	function handleHide(parentId, bool) {
-		if (bool) {
-			setHidden((prevHidden) => [...prevHidden, parentId]);
-			setHovered(null);
-		} else {
-			setHidden((prevHidden) => {
-				return prevHidden.filter((e) => e !== parentId);
-			});
-		}
-	}
-
-	function handleFocus(parentId) {
-		if (parentId) {
-			setFocused(parentId);
-		} else {
-			setFocused(null);
-		}
-	}
 
 	const reply = useMutation(
 		// TODO: spinning wheel
@@ -112,7 +82,6 @@ export function PostsContextProvider({ children }) {
 				const { id, text } = row;
 				queryClient.setQueryData(["repoData"], (repo) => {
 					const index = repo.findIndex((e) => e.id === id);
-					console.log(index);
 					repo[index].text = text;
 					return repo;
 				});
@@ -158,12 +127,6 @@ export function PostsContextProvider({ children }) {
 				isLoading,
 				error,
 				posts,
-				hovered,
-				handleHover,
-				hidden,
-				handleHide,
-				focused,
-				handleFocus,
 				reply: (parent_id, text) => reply.mutate({ parent_id, text }),
 				remove: (id) => remove.mutate({ id }),
 				edit: (id, text) => edit.mutate({ id, text }),
