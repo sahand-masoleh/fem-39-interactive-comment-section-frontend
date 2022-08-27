@@ -15,3 +15,36 @@ $max-width: 45rem;
 	margin: 0 auto;
 	padding: 0 1rem;
 }
+
+.button {
+	border: none;
+	font-size: 1rem;
+	font-weight: 500;
+	padding: 1ch;
+	min-height: 3rem;
+	border-radius: 0.5rem;
+	color: $c-n-white;
+	justify-self: right;
+	text-transform: uppercase;
+	cursor: pointer;
+
+	&--confirm {
+		background-color: $c-p-moderate-blue;
+		max-width: 10ch;
+		width: 100%;
+
+		&:hover {
+			background-color: $c-p-light-grayish-blue;
+		}
+	}
+
+	&--yes {
+		background-color: $c-p-soft-red;
+		flex-grow: 1;
+	}
+
+	&--no {
+		background-color: $c-n-grayish-blue;
+		flex-grow: 1;
+	}
+}

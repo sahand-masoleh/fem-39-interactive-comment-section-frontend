@@ -4,15 +4,16 @@ import { useContext } from "react";
 
 import { HiddenContext, FocusedContext } from "@contexts/UIContexts";
 import { AuthContext } from "@contexts/AuthContext";
-
-import { ReactComponent as UpIcon } from "@assets/icon-up.svg";
 import useActions from "./hooks/useActions";
+
 import Line from "./Line";
 import Info from "./Info";
 import ActionContainer from "./ActionContainer";
 import Voting from "./Voting";
 import Text from "./Text";
 import Reply from "./Reply";
+
+import { ReactComponent as UpIcon } from "@assets/icon-up.svg";
 
 function Post({
 	id,
@@ -37,8 +38,7 @@ function Post({
 	const { user } = useContext(AuthContext);
 	const isCurrentUser = user_id === user?.id;
 
-	const { state, dispatch, handleReply, handleEdit, handleDelete } =
-		useActions();
+	const { state, dispatch, handleReply, handleEdit } = useActions(id);
 
 	const isDeleted = user_id === 1;
 
@@ -80,7 +80,7 @@ function Post({
 					<Text
 						text={text}
 						isEditing={state.isEditing}
-						isDeleted={state.isDeleted}
+						isDeleted={isDeleted}
 						handleSubmit={(text) => handleEdit(id, text)}
 					/>
 					{hasHidden && (

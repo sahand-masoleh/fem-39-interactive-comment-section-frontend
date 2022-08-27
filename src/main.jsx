@@ -9,6 +9,7 @@ import {
 	HoveredContextProvider,
 	FocusedContextProvider,
 } from "@contexts/UIContexts";
+import { ModalContextProvider } from "@contexts/ModalContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 const queryClient = new QueryClient();
@@ -22,7 +23,9 @@ function Contexts({ children }) {
 			<PostsContextProvider>
 				<HiddenContextProvider>
 					<HoveredContextProvider>
-						<FocusedContextProvider>{children}</FocusedContextProvider>
+						<FocusedContextProvider>
+							<ModalContextProvider>{children}</ModalContextProvider>
+						</FocusedContextProvider>
 					</HoveredContextProvider>
 				</HiddenContextProvider>
 			</PostsContextProvider>
@@ -41,7 +44,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 					</Routes>
 				</BrowserRouter>
 			</Contexts>
-			<ReactQueryDevtools />
+			{/* <ReactQueryDevtools /> */}
 		</QueryClientProvider>
 	</React.StrictMode>
 );

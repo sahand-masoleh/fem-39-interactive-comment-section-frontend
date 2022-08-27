@@ -1,13 +1,19 @@
-import { useReducer, useContext } from "react";
+import { useReducer, useContext, useEffect } from "react";
 import { PostsContext } from "@contexts/PostsContext";
+import { ModalContext } from "@contexts/ModalContext";
 
-function useActions() {
+function useActions(id) {
 	const { reply, remove, edit } = useContext(PostsContext);
 	const [state, dispatch] = useReducer(reducer, {
 		isReplying: false,
 		isEditing: false,
 		isDeleting: false,
 	});
+	const getCofirmation = useContext(ModalContext);
+
+	useEffect(() => {
+		if (state.isDeleting) handleDelete();
+	}, [state]);
 
 	function reducer(state, action) {
 		switch (action.type) {
@@ -30,12 +36,15 @@ function useActions() {
 		edit(id, text);
 		dispatch({ type: "editing" });
 	}
-	function handleDelete(id) {
-		remove(id);
+	async function handleDelete() {
+		try {
+			await getCofirmation();
+			remove(id);
+		} catch {}
 		dispatch({ type: "deleting" });
 	}
 
-	return { state, dispatch, handleReply, handleEdit, handleDelete };
+	return { state, dispatch, handleReply, handleEdit };
 }
 
 export default useActions;
