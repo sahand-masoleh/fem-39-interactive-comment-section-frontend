@@ -60,3 +60,22 @@ export function FocusedContextProvider({ children }) {
 		</FocusedContext.Provider>
 	);
 }
+
+export const ClosingContext = createContext();
+
+export function ClosingContextProvider({ children }) {
+	const [closing, setClosing] = useState(false);
+
+	function handleClose(parentId) {
+		if (parentId) {
+			setClosing(parentId);
+		} else {
+			setClosing(null);
+		}
+	}
+	return (
+		<ClosingContext.Provider value={{ closing, handleClose }}>
+			{children}
+		</ClosingContext.Provider>
+	);
+}

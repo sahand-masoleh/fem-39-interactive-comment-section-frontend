@@ -33,7 +33,7 @@ function Text({ text, isEditing, isDeleted, handleSubmit }) {
 					onInput={resize}
 				/>
 				<button
-					className="post__button"
+					className="post__button button button--confirm"
 					onClick={() => handleSubmit(editedText)}
 				>
 					UPDATE

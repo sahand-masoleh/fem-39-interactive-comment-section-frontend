@@ -37,6 +37,19 @@
 		}
 	}
 
+	&--closing {
+		animation: close 250ms linear;
+
+		@keyframes close {
+			from {
+				margin-bottom: 10rem;
+			}
+			to {
+				margin-bottom: 0;
+			}
+		}
+	}
+
 	&__voting {
 		grid-area: voting;
 	}
@@ -111,21 +124,6 @@
 
 	&__button {
 		grid-area: button;
-		max-width: 10ch;
-		border: none;
-		background-color: $c-p-moderate-blue;
-		font-size: 1rem;
-		font-weight: 500;
-		padding: 1ch;
-		border-radius: 0.5rem;
-		color: $c-n-white;
-		justify-self: right;
-		width: 100%;
-
-		&:hover {
-			cursor: pointer;
-			background-color: $c-p-light-grayish-blue;
-		}
 	}
 
 	&__more {

@@ -2,7 +2,11 @@ import "./Post.scss";
 
 import { useContext } from "react";
 
-import { HiddenContext, FocusedContext } from "@contexts/UIContexts";
+import {
+	HiddenContext,
+	FocusedContext,
+	ClosingContext,
+} from "@contexts/UIContexts";
 import { AuthContext } from "@contexts/AuthContext";
 import useActions from "./hooks/useActions";
 
@@ -35,6 +39,9 @@ function Post({
 	const { focused, handleFocus } = useContext(FocusedContext);
 	const isFocused = focused === id;
 
+	const { closing, handleClose } = useContext(ClosingContext);
+	const isClosing = closing === id;
+
 	const { user } = useContext(AuthContext);
 	const isCurrentUser = user_id === user?.id;
 
@@ -60,8 +67,13 @@ function Post({
 			<div id={id} className="post-container">
 				<div className="line-container">{lineMap()}</div>
 				<div
-					className={`post ${isFocused ? "post--focused" : ""}`}
-					onAnimationEnd={() => handleFocus(null)}
+					className={`post ${isFocused ? "post--focused" : ""} ${
+						isClosing ? "post--closing" : ""
+					}`}
+					onAnimationEnd={(event) => {
+						if (event.animationName === "focus") handleFocus(null);
+						if (event.animationName === "close") handleClose(null);
+					}}
 				>
 					<Voting votes={votes} />
 					<Info

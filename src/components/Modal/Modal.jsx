@@ -1,9 +1,25 @@
 import "./Modal.scss";
+import { useRef, useEffect } from "react";
 import { createPortal } from "react-dom";
 
 function Modal({ accept, refuse }) {
+	const modalRef = useRef();
+	useEffect(() => {
+		modalRef.current.focus();
+	}, []);
+
+	function handleKeyDown(event) {
+		if (event.key === "Enter") accept();
+		if (event.key === "Escape") refuse();
+	}
+
 	return createPortal(
-		<div className="modal">
+		<div
+			className="modal"
+			ref={modalRef}
+			onKeyDown={handleKeyDown}
+			tabIndex={0}
+		>
 			<div className="dialog">
 				<h2 className="dialog__title">Delete comment</h2>
 				<p className="dialog__text">

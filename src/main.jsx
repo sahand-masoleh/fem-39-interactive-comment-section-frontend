@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { PostsContextProvider } from "@contexts/PostsContext";
 import {
 	HiddenContextProvider,
 	HoveredContextProvider,
 	FocusedContextProvider,
+	ClosingContextProvider,
 } from "@contexts/UIContexts";
 import { ModalContextProvider } from "@contexts/ModalContext";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
@@ -24,7 +24,9 @@ function Contexts({ children }) {
 				<HiddenContextProvider>
 					<HoveredContextProvider>
 						<FocusedContextProvider>
-							<ModalContextProvider>{children}</ModalContextProvider>
+							<ClosingContextProvider>
+								<ModalContextProvider>{children}</ModalContextProvider>
+							</ClosingContextProvider>
 						</FocusedContextProvider>
 					</HoveredContextProvider>
 				</HiddenContextProvider>
@@ -44,7 +46,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 					</Routes>
 				</BrowserRouter>
 			</Contexts>
-			{/* <ReactQueryDevtools /> */}
 		</QueryClientProvider>
 	</React.StrictMode>
 );

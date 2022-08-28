@@ -32,7 +32,10 @@ function Reply({ handleSubmit }) {
 					onInput={resize}
 					rows={1}
 				/>
-				<button className="post__button" onClick={() => handleSubmit(input)}>
+				<button
+					className="post__button button button--confirm"
+					onClick={() => handleSubmit(input)}
+				>
 					Reply
 				</button>
 			</div>

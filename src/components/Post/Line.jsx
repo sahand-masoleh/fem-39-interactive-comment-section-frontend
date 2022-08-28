@@ -4,16 +4,19 @@ import {
 	HiddenContext,
 	HoveredContext,
 	FocusedContext,
+	ClosingContext,
 } from "@contexts/UIContexts";
 
 function Line({ parentId }) {
 	const { handleHide } = useContext(HiddenContext);
 	const { hovered, handleHover } = useContext(HoveredContext);
 	const { handleFocus } = useContext(FocusedContext);
+	const { handleClose } = useContext(ClosingContext);
 
 	function handleClick() {
 		handleHide(parentId, true);
 		handleFocus(parentId);
+		handleClose(parentId);
 		handleHover(null);
 		document
 			.getElementById(parentId)
