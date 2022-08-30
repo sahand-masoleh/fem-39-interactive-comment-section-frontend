@@ -1,22 +1,44 @@
-import { createContext, useContext } from "react";
+import { createContext, useContext, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { AuthContext } from "./AuthContext";
 
 export const PostsContext = createContext();
 
+const BASE = "http://localhost:4000";
+
+export const OPTS = {
+	DATE: "date",
+	SCORE: "score",
+	ASC: "asc",
+	DESC: "desc",
+};
+
 export function PostsContextProvider({ children }) {
 	const queryClient = useQueryClient();
 	const { user } = useContext(AuthContext);
+	const [params, setParams] = useState({
+		sort_by: OPTS.DATE,
+		order: OPTS.DESC,
+		page: 0,
+	});
 
 	const {
 		isLoading,
 		error,
 		data: posts,
 	} = useQuery(
-		["repoData"],
-		async () => {
-			const res = await fetch("http://localhost:4000/posts");
+		["repoData", params],
+		async ({ queryKey }) => {
+			const { sort_by, order, page } = queryKey[1];
+			const route = "posts";
+			const options = new URLSearchParams({
+				sort_by: sort_by,
+				order: order,
+			});
+			const url = new URL(`${route}/?${options}`, BASE);
+
+			const res = await fetch(url);
 			if (res.status !== 200) throw new Error("could not fetch");
 			return await res.json();
 		},
@@ -36,8 +58,8 @@ export function PostsContextProvider({ children }) {
 				},
 				body: JSON.stringify({ parent_id, text }),
 			});
-			if (res.status !== 201) throw new Error("could not post");
 			res = await res.json();
+			if (res.success === false) throw new Error(res.message);
 			return res;
 		},
 		{
@@ -72,8 +94,8 @@ export function PostsContextProvider({ children }) {
 				},
 				body: JSON.stringify({ id, text }),
 			});
-			if (res.status !== 200) throw new Error("could not update");
 			res = await res.json();
+			if (res.success === false) throw new Error(res.message);
 			return res;
 		},
 		{
@@ -121,6 +143,25 @@ export function PostsContextProvider({ children }) {
 		}
 	);
 
+	const addVote = useMutation(
+		async ({ id, is_up }) => {
+			let res = await fetch("http://localhost:4000/upvotes", {
+				method: "post",
+				credentials: "include",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ id, is_up }),
+			});
+			res = await res.json();
+			if (res.success === false) throw new Error(res.message);
+			return res;
+		},
+		{
+			onSuccess: (row) => {},
+		}
+	);
+
 	return (
 		<PostsContext.Provider
 			value={{
@@ -130,6 +171,8 @@ export function PostsContextProvider({ children }) {
 				reply: (parent_id, text) => reply.mutate({ parent_id, text }),
 				remove: (id) => remove.mutate({ id }),
 				edit: (id, text) => edit.mutate({ id, text }),
+				params,
+				setParams,
 			}}
 		>
 			{children}

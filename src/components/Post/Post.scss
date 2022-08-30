@@ -6,24 +6,31 @@
 		"lines post"
 		"lines reply";
 	grid-template-columns: min-content auto;
+
+	&:nth-child(2) > .post {
+		margin-top: 0;
+	}
 }
 
 .post {
 	grid-area: post;
 	width: 100%;
 	padding: 1.5rem;
+	margin-top: 1em;
 	border-radius: 0.5rem;
 	background-color: $c-n-white;
-	display: grid;
-	margin-top: 1rem;
-	grid-template-areas:
-		"voting info action"
-		"voting text text"
-		"button button button";
-	grid-template-columns: min-content auto auto;
-	row-gap: 1rem;
-	column-gap: 1.5rem;
 	position: relative;
+
+	&--normal {
+		display: grid;
+		grid-template-areas:
+			"voting info action"
+			"voting text text"
+			"button button button";
+		grid-template-columns: min-content auto auto;
+		row-gap: 1rem;
+		column-gap: 1.5rem;
+	}
 
 	&--focused {
 		animation: focus 2s linear;
@@ -42,7 +49,7 @@
 
 		@keyframes close {
 			from {
-				margin-bottom: 10rem;
+				margin-bottom: 5rem;
 			}
 			to {
 				margin-bottom: 0;
@@ -129,6 +136,7 @@
 	&__more {
 		position: absolute;
 		bottom: 1ch;
+		left: 0;
 		padding-left: inherit;
 		font-size: 0.75rem;
 		color: $c-p-moderate-blue;
@@ -142,7 +150,8 @@
 	&__scroll {
 		position: absolute;
 		height: 1rem;
-		margin: 0.25rem;
+		top: 0.25rem;
+		left: 0.25rem;
 		aspect-ratio: 1/1;
 		background: none;
 		color: $c-n-light-gray;

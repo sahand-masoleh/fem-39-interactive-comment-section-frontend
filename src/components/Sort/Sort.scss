@@ -1,0 +1,38 @@
+@use "@styles/common" as *;
+
+.sort {
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	margin: 1rem 0;
+	gap: 1ch;
+	font-size: 0.8rem;
+	height: 1rem;
+	text-transform: uppercase;
+
+	&__text {
+		color: $c-n-grayish-blue;
+	}
+
+	&__button {
+		aspect-ratio: 1;
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+		font-size: inherit;
+		text-transform: inherit;
+
+		&:hover {
+			color: $c-n-dark-blue;
+		}
+
+		&--unselected {
+			color: $c-n-grayish-blue;
+		}
+
+		&--selected {
+			color: $c-n-dark-blue;
+			font-weight: 500;
+		}
+	}
+}

@@ -2,7 +2,7 @@ import { ReactComponent as ReplyIcon } from "@assets/icon-reply.svg";
 import { ReactComponent as EditIcon } from "@assets/icon-edit.svg";
 import { ReactComponent as DeleteIcon } from "@assets/icon-delete.svg";
 
-function ActionContainer({ isCurrentUser, isDeleted, dispatch }) {
+function ActionContainer({ isCurrentUser, dispatch }) {
 	const handleDelete = () => dispatch({ type: "deleting" });
 	const handleEdit = () => dispatch({ type: "editing" });
 	const handleReply = () => dispatch({ type: "replying" });
@@ -20,9 +20,7 @@ function ActionContainer({ isCurrentUser, isDeleted, dispatch }) {
 					<Action name="Edit" onClick={handleEdit} Icon={EditIcon} />
 				</>
 			)}
-			{!isDeleted && (
-				<Action name="Reply" onClick={handleReply} Icon={ReplyIcon} />
-			)}
+			<Action name="Reply" onClick={handleReply} Icon={ReplyIcon} />
 		</div>
 	);
 }

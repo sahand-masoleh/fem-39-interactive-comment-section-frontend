@@ -4,6 +4,7 @@ import { PostsContext } from "@contexts/PostsContext";
 
 import Nav from "@components/Nav/Nav";
 import Post from "@components/Post/Post";
+import Sort from "@components/Sort/Sort";
 
 function App() {
 	const { isLoading, error, posts } = useContext(PostsContext);
@@ -23,6 +24,7 @@ function App() {
 				votes={post.votes}
 				replies={post.replies}
 				path={post.path.slice(0, -1)}
+				seq={post.seq}
 			/>
 		));
 		return map;
@@ -33,7 +35,12 @@ function App() {
 			<Nav />
 			{isLoading && <main className="main">loading...</main>}
 			{error && <main className="main">error fetching data!</main>}
-			{posts && <main className="main">{postsMap()}</main>}
+			{posts && (
+				<main className="main">
+					<Sort />
+					{postsMap()}
+				</main>
+			)}
 		</div>
 	);
 }

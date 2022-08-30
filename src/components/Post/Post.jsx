@@ -62,39 +62,45 @@ function Post({
 			.map((_, i) => <Line key={path[i]} parentId={path[i]} />);
 	};
 
+	const className = `
+	${isFocused ? "post--focused" : ""} ${isClosing ? "post--closing" : ""}
+	 ${isDeleted ? "post--deleted" : "post--normal"}
+	`;
+
+	function onAnimationEnd(event) {
+		if (event.animationName === "focus") handleFocus(null);
+		if (event.animationName === "close") handleClose(null);
+	}
+
 	if (!isHidden)
 		return (
 			<div id={id} className="post-container">
 				<div className="line-container">{lineMap()}</div>
-				<div
-					className={`post ${isFocused ? "post--focused" : ""} ${
-						isClosing ? "post--closing" : ""
-					}`}
-					onAnimationEnd={(event) => {
-						if (event.animationName === "focus") handleFocus(null);
-						if (event.animationName === "close") handleClose(null);
-					}}
-				>
-					<Voting votes={votes} />
-					<Info
-						user_id={user_id}
-						name={name}
-						date={date}
-						avatarUrl={avatar_url}
-						isCurrentUser={isCurrentUser}
-						isDeleted={isDeleted}
-					/>
-					<ActionContainer
-						isCurrentUser={isCurrentUser}
-						isDeleted={isDeleted}
-						dispatch={dispatch}
-					/>
+
+				<div className={`post ${className}`} onAnimationEnd={onAnimationEnd}>
+					{!isDeleted && (
+						<>
+							<Voting votes={votes} />
+							<Info
+								user_id={user_id}
+								name={name}
+								date={date}
+								avatarUrl={avatar_url}
+								isCurrentUser={isCurrentUser}
+							/>
+							<ActionContainer
+								isCurrentUser={isCurrentUser}
+								dispatch={dispatch}
+							/>
+						</>
+					)}
 					<Text
 						text={text}
 						isEditing={state.isEditing}
 						isDeleted={isDeleted}
 						handleSubmit={(text) => handleEdit(id, text)}
 					/>
+
 					{hasHidden && (
 						<p className="post__more" onClick={() => handleHide(id, false)}>
 							{replies} {replies == 1 ? "reply" : "replies"}
@@ -106,6 +112,7 @@ function Post({
 						</button>
 					)}
 				</div>
+
 				{state.isReplying && (
 					<Reply
 						handleSubmit={(text) => {
