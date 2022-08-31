@@ -1,5 +1,6 @@
 import "./App.scss";
 import { useContext } from "react";
+import { Outlet } from "react-router-dom";
 import { PostsContext } from "@contexts/PostsContext";
 
 import Nav from "@components/Nav/Nav";
@@ -33,6 +34,7 @@ function App() {
 	return (
 		<div className="app">
 			<Nav />
+			<Outlet />
 			{isLoading && <main className="main">loading...</main>}
 			{error && <main className="main">error fetching data!</main>}
 			{posts && (

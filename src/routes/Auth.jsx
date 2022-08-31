@@ -22,7 +22,7 @@ function Auth() {
 		} catch (error) {
 			console.log(error);
 		}
-		navigate("/", { replace: true });
+		navigate("../", { replace: true });
 	}
 }
 

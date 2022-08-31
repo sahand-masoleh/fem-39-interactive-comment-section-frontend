@@ -17,7 +17,7 @@ const queryClient = new QueryClient();
 import App from "./App";
 import Auth from "@routes/Auth";
 
-function Contexts({ children }) {
+function AppWithContexts() {
 	return (
 		<AuthContextProvider>
 			<PostsContextProvider>
@@ -25,7 +25,9 @@ function Contexts({ children }) {
 					<HoveredContextProvider>
 						<FocusedContextProvider>
 							<ClosingContextProvider>
-								<ModalContextProvider>{children}</ModalContextProvider>
+								<ModalContextProvider>
+									<App />
+								</ModalContextProvider>
 							</ClosingContextProvider>
 						</FocusedContextProvider>
 					</HoveredContextProvider>
@@ -38,14 +40,13 @@ function Contexts({ children }) {
 ReactDOM.createRoot(document.getElementById("root")).render(
 	<React.StrictMode>
 		<QueryClientProvider client={queryClient}>
-			<Contexts>
-				<BrowserRouter>
-					<Routes>
-						<Route path="/" element={<App />} />
-						<Route path="/auth" element={<Auth />} />
-					</Routes>
-				</BrowserRouter>
-			</Contexts>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<AppWithContexts />}>
+						<Route path="auth" element={<Auth />} />
+					</Route>
+				</Routes>
+			</BrowserRouter>
 		</QueryClientProvider>
 	</React.StrictMode>
 );

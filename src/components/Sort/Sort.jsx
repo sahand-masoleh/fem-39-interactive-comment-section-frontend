@@ -1,30 +1,16 @@
 import "./Sort.scss";
 
-import { useContext, useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useContext } from "react";
 import { PostsContext, OPTS } from "@contexts/PostsContext";
 
-function Sort({ onChange }) {
-	const { params, setParams } = useContext(PostsContext);
-	const [searchParams, setSearchParams] = useSearchParams();
-	const [sort_by, setSort_by] = useState(
-		searchParams.get("sort_by") ?? params.sort_by
-	);
-	const [order, setOrder] = useState(searchParams.get("order") ?? params.order);
-
-	useEffect(() => {
-		setSearchParams({ sort_by: sort_by, order });
-	}, [sort_by, order]);
-
-	useEffect(() => {
-		setParams((prev) => ({ ...prev, sort_by, order }));
-	}, [searchParams]);
+function Sort() {
+	const { params, setSearchParams } = useContext(PostsContext);
 
 	function handleSort_by(value) {
-		setSort_by(value);
+		setSearchParams({ sort_by: value, order: params.order });
 	}
 	function handleOrder(value) {
-		setOrder(value);
+		setSearchParams({ sort_by: params.sort_by, order: value });
 	}
 
 	return (
@@ -33,7 +19,7 @@ function Sort({ onChange }) {
 			<span className="sort__text">&#91;</span>
 			<button
 				className={`sort__button ${
-					sort_by === OPTS.DATE
+					params.sort_by === OPTS.DATE
 						? "sort__button--selected"
 						: "sort__button--unselected"
 				}`}
@@ -43,7 +29,7 @@ function Sort({ onChange }) {
 			</button>
 			<button
 				className={`sort__button ${
-					sort_by === OPTS.SCORE
+					params.sort_by === OPTS.SCORE
 						? "sort__button--selected"
 						: "sort__button--unselected"
 				}`}
@@ -54,7 +40,7 @@ function Sort({ onChange }) {
 			<span className="sort__text">|</span>
 			<button
 				className={`sort__button ${
-					order === OPTS.ASC
+					params.order === OPTS.ASC
 						? "sort__button--selected"
 						: "sort__button--unselected"
 				}`}
@@ -64,7 +50,7 @@ function Sort({ onChange }) {
 			</button>
 			<button
 				className={`sort__button ${
-					order === OPTS.DESC
+					params.order === OPTS.DESC
 						? "sort__button--selected"
 						: "sort__button--unselected"
 				}`}

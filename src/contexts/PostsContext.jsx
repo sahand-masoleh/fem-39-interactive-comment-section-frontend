@@ -1,5 +1,6 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useSearchParams } from "react-router-dom";
 
 import { AuthContext } from "./AuthContext";
 
@@ -15,13 +16,26 @@ export const OPTS = {
 };
 
 export function PostsContextProvider({ children }) {
+	const [searchParams, setSearchParams] = useSearchParams();
 	const queryClient = useQueryClient();
 	const { user } = useContext(AuthContext);
 	const [params, setParams] = useState({
-		sort_by: OPTS.DATE,
-		order: OPTS.DESC,
+		sort_by: searchParams.get("sort_by") ?? OPTS.DATE,
+		order: searchParams.get("order") ?? OPTS.DESC,
 		page: 0,
 	});
+
+	useEffect(() => {
+		const sort_by = searchParams.get("sort_by");
+		const order = searchParams.get("order");
+		if (sort_by || order) {
+			setParams((prev) => ({
+				...prev,
+				sort_by,
+				order,
+			}));
+		}
+	}, [searchParams]);
 
 	const {
 		isLoading,
@@ -172,7 +186,7 @@ export function PostsContextProvider({ children }) {
 				remove: (id) => remove.mutate({ id }),
 				edit: (id, text) => edit.mutate({ id, text }),
 				params,
-				setParams,
+				setSearchParams,
 			}}
 		>
 			{children}

@@ -33,7 +33,7 @@
 	}
 
 	&--focused {
-		animation: focus 2s linear;
+		animation: focus 1s linear;
 		outline: 0.25rem solid transparent;
 
 		@keyframes focus {
