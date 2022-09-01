@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { AuthContextProvider } from "./contexts/AuthContext";
 import { PostsContextProvider } from "@contexts/PostsContext";
 import {
@@ -47,6 +48,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 					</Route>
 				</Routes>
 			</BrowserRouter>
+			<ReactQueryDevtools />
 		</QueryClientProvider>
 	</React.StrictMode>
 );

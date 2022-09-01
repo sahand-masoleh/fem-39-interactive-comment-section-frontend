@@ -1,0 +1,18 @@
+@use "@styles/common" as *;
+
+.more {
+	padding: 1ch 0;
+
+	&__text {
+		background-color: transparent;
+		border: none;
+		margin-left: 1.5rem;
+		color: $c-n-grayish-blue;
+		font-size: 0.9rem;
+
+		&:hover {
+			cursor: pointer;
+			color: $c-n-dark-blue;
+		}
+	}
+}

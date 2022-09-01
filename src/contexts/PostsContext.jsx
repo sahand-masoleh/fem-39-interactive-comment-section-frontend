@@ -1,5 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+	useInfiniteQuery,
+	useMutation,
+	useQueryClient,
+} from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
 
 import { AuthContext } from "./AuthContext";
@@ -29,37 +33,38 @@ export function PostsContextProvider({ children }) {
 		const sort_by = searchParams.get("sort_by");
 		const order = searchParams.get("order");
 		if (sort_by || order) {
-			setParams((prev) => ({
-				...prev,
+			setParams({
 				sort_by,
 				order,
-			}));
+				page: 0,
+			});
 		}
 	}, [searchParams]);
 
-	const {
-		isLoading,
-		error,
-		data: posts,
-	} = useQuery(
-		["repoData", params],
-		async ({ queryKey }) => {
-			const { sort_by, order, page } = queryKey[1];
-			const route = "posts";
-			const options = new URLSearchParams({
-				sort_by: sort_by,
-				order: order,
-			});
-			const url = new URL(`${route}/?${options}`, BASE);
+	const { isLoading, error, data, fetchNextPage, hasNextPage } =
+		useInfiniteQuery(
+			["repoData", params.sort_by, params.order],
+			async ({ queryKey, pageParam = 0 }) => {
+				const [_, sort_by, order] = queryKey;
+				const route = "posts";
+				const options = new URLSearchParams({
+					sort_by: sort_by,
+					order: order,
+					page: pageParam,
+				});
+				const url = new URL(`${route}/?${options}`, BASE);
 
-			const res = await fetch(url);
-			if (res.status !== 200) throw new Error("could not fetch");
-			return await res.json();
-		},
-		{
-			staleTime: Infinity,
-		}
-	);
+				const res = await fetch(url);
+				if (res.status !== 200) throw new Error("could not fetch");
+				return await res.json();
+			},
+			{
+				staleTime: Infinity,
+				getNextPageParam: (lastPage) => {
+					return lastPage.rows.length ? lastPage.page + 1 : undefined;
+				},
+			}
+		);
 
 	const reply = useMutation(
 		// TODO: spinning wheel
@@ -84,15 +89,21 @@ export function PostsContextProvider({ children }) {
 					name: user.name,
 					avatar_url: user.avatar_url,
 				};
-				queryClient.setQueryData(["repoData"], (repo) => {
-					const parentIndex = repo.findIndex((e) => e.id === parent_id);
-					const parent = repo[parentIndex];
-					parent.replies++;
-					newPost.path = [...parent.path, parent_id];
-					newPost.depth = parent.depth + 1;
+				queryClient.setQueriesData(["repoData"], (repo) => {
+					for (let page of repo.pages) {
+						const parentIndex = page.rows.findIndex((e) => e.id === parent_id);
+						if (parentIndex === -1) {
+							continue;
+						} else {
+							const parent = page.rows[parentIndex];
+							parent.replies++;
+							newPost.path = [...parent.path, parent_id];
+							newPost.depth = parent.depth + 1;
 
-					repo.splice(parentIndex, 1, parent, newPost);
-					return repo;
+							page.rows.splice(parentIndex, 1, parent, newPost);
+							return repo;
+						}
+					}
 				});
 			},
 		}
@@ -116,10 +127,16 @@ export function PostsContextProvider({ children }) {
 			onSuccess: (row) => {
 				// TODO: mark edited
 				const { id, text } = row;
-				queryClient.setQueryData(["repoData"], (repo) => {
-					const index = repo.findIndex((e) => e.id === id);
-					repo[index].text = text;
-					return repo;
+				queryClient.setQueriesData(["repoData"], (repo) => {
+					for (let page of repo.pages) {
+						const index = page.rows.findIndex((e) => e.id === id);
+						if (index === -1) {
+							continue;
+						} else {
+							page.rows[index].text = text;
+							return repo;
+						}
+					}
 				});
 			},
 		}
@@ -148,10 +165,16 @@ export function PostsContextProvider({ children }) {
 					text: "",
 					avatar_url: null,
 				};
-				queryClient.setQueryData(["repoData"], (repo) => {
-					const index = repo.findIndex((e) => e.id === id);
-					repo[index] = { ...repo[index], ...deleted };
-					return repo;
+				queryClient.setQueriesData(["repoData"], (repo) => {
+					for (let page of repo.pages) {
+						const index = page.rows.findIndex((e) => e.id === id);
+						if (index === -1) {
+							continue;
+						} else {
+							page.rows[index] = { ...page.rows[index], ...deleted };
+							return repo;
+						}
+					}
 				});
 			},
 		}
@@ -181,12 +204,15 @@ export function PostsContextProvider({ children }) {
 			value={{
 				isLoading,
 				error,
-				posts,
+				data,
 				reply: (parent_id, text) => reply.mutate({ parent_id, text }),
 				remove: (id) => remove.mutate({ id }),
 				edit: (id, text) => edit.mutate({ id, text }),
 				params,
+				setParams,
 				setSearchParams,
+				fetchNextPage,
+				hasNextPage,
 			}}
 		>
 			{children}
