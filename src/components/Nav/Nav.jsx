@@ -46,7 +46,7 @@ function Nav() {
 	}
 
 	return (
-		<div className="nav-container">
+		<div className="nav-wrapper">
 			<nav className="nav">{renderElement()}</nav>
 		</div>
 	);

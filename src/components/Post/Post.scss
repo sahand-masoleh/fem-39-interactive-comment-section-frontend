@@ -1,13 +1,18 @@
 @use "@styles/common" as *;
 
-.post-container {
+.posts-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.post-wrapper {
 	display: grid;
 	grid-template-areas:
 		"lines post"
 		"lines reply";
 	grid-template-columns: min-content auto;
 
-	&:nth-child(2) > .post {
+	&:first-child > .post {
 		margin-top: 0;
 	}
 }
@@ -100,7 +105,7 @@
 		color: $c-n-grayish-blue;
 	}
 
-	&__action-container {
+	&__actions-container {
 		grid-area: action;
 		display: flex;
 		flex-wrap: wrap;
@@ -230,7 +235,7 @@
 	}
 }
 
-.reply-container {
+.reply-wrapper {
 	grid-area: reply;
 	display: flex;
 }

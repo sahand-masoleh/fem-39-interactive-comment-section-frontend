@@ -31,11 +31,11 @@ function useActions(id) {
 		if (state.isDeleting) handleDelete();
 	}, [state]);
 
-	function handleReply(id, text) {
+	function handleReply(text) {
 		reply(id, text);
 		dispatch({ type: "replying" });
 	}
-	function handleEdit(id, text) {
+	function handleEdit(text) {
 		edit(id, text);
 		dispatch({ type: "editing" });
 	}

@@ -26,7 +26,7 @@ function Modal({ accept, refuse }) {
 					Are you sure you want to delete this comment? This will remove the
 					comment and can't be undone.
 				</p>
-				<div className="dialog__button-container">
+				<div className="dialog__buttons-container">
 					<button onClick={refuse} className="dialog__button button button--no">
 						no, cancel
 					</button>

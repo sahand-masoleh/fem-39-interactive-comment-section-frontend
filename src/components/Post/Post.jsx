@@ -12,10 +12,11 @@ import useActions from "./hooks/useActions";
 
 import Line from "./Line";
 import Info from "./Info";
-import ActionContainer from "./ActionContainer";
+import ActionsContainer from "./ActionsContainer";
 import Voting from "./Voting";
 import Text from "./Text";
 import Reply from "./Reply";
+import Continue from "./Continue";
 
 import { ReactComponent as UpIcon } from "@assets/icon-up.svg";
 
@@ -74,8 +75,8 @@ function Post({
 
 	if (!isHidden)
 		return (
-			<div id={id} className="post-container">
-				<div className="line-container">{lineMap()}</div>
+			<div id={id} className="post-wrapper">
+				<div className="lines-container">{lineMap()}</div>
 
 				<div className={`post ${className}`} onAnimationEnd={onAnimationEnd}>
 					{!isDeleted && (
@@ -88,7 +89,7 @@ function Post({
 								avatarUrl={avatar_url}
 								isCurrentUser={isCurrentUser}
 							/>
-							<ActionContainer
+							<ActionsContainer
 								isCurrentUser={isCurrentUser}
 								dispatch={dispatch}
 							/>
@@ -98,7 +99,7 @@ function Post({
 						text={text}
 						isEditing={state.isEditing}
 						isDeleted={isDeleted}
-						handleSubmit={(text) => handleEdit(id, text)}
+						handleSubmit={handleEdit}
 					/>
 
 					{hasHidden && (
@@ -114,13 +115,10 @@ function Post({
 				</div>
 
 				{state.isReplying && (
-					<Reply
-						handleSubmit={(text) => {
-							handleReply(id, text);
-						}}
-						avatar={user.avatar}
-					/>
+					<Reply handleSubmit={handleReply} avatar={user.avatar} />
 				)}
+
+				{depth > 0 && depth % 2 === 0 && <Continue />}
 			</div>
 		);
 }

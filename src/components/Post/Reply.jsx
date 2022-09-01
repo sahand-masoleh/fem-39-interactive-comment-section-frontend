@@ -18,7 +18,7 @@ function Reply({ handleSubmit }) {
 	}
 
 	return (
-		<div className="reply-container">
+		<div className="reply-wrapper">
 			<div className="line line--unselectable"></div>
 			<div className="reply">
 				<div className="reply__avatar image">

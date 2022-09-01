@@ -2,13 +2,13 @@ import { ReactComponent as ReplyIcon } from "@assets/icon-reply.svg";
 import { ReactComponent as EditIcon } from "@assets/icon-edit.svg";
 import { ReactComponent as DeleteIcon } from "@assets/icon-delete.svg";
 
-function ActionContainer({ isCurrentUser, dispatch }) {
+function ActionsContainer({ isCurrentUser, dispatch }) {
 	const handleDelete = () => dispatch({ type: "deleting" });
 	const handleEdit = () => dispatch({ type: "editing" });
 	const handleReply = () => dispatch({ type: "replying" });
 
 	return (
-		<div className="post__action-container">
+		<div className="post__actions-container">
 			{isCurrentUser && (
 				<>
 					<Action
@@ -25,7 +25,7 @@ function ActionContainer({ isCurrentUser, dispatch }) {
 	);
 }
 
-export default ActionContainer;
+export default ActionsContainer;
 
 function Action({ name, Icon, onClick, isSecondary = false }) {
 	return (
