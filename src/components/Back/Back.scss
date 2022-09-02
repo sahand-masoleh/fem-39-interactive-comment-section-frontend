@@ -1,0 +1,25 @@
+@use "@styles/common" as *;
+
+.back {
+	color: $c-n-grayish-blue;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 0.5ch;
+
+	&:hover {
+		cursor: pointer;
+		color: $c-n-dark-blue;
+	}
+
+	&__text,
+	&__text:visited {
+		font-size: 0.9rem;
+		color: inherit;
+	}
+
+	&__icon {
+		color: inherit;
+		height: 0.9rem;
+	}
+}

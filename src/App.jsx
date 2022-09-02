@@ -4,7 +4,6 @@ import { Outlet } from "react-router-dom";
 import { PostsContext } from "@contexts/PostsContext";
 
 import Nav from "@components/Nav/Nav";
-import Sort from "@components/Sort/Sort";
 import PostsContainer from "@components/Post/PostsContainer";
 
 function App() {
@@ -14,14 +13,11 @@ function App() {
 		<div className="app">
 			<Nav />
 			<Outlet />
-			{isLoading && <main className="main">loading...</main>}
-			{error && <main className="main">error fetching data!</main>}
-			{data && (
-				<main className="main">
-					<Sort />
-					<PostsContainer />
-				</main>
-			)}
+			<main className="main">
+				{isLoading && <h2>loading...</h2>}
+				{error && <h2>error fetching data!</h2>}
+				{data && <PostsContainer />}
+			</main>
 		</div>
 	);
 }

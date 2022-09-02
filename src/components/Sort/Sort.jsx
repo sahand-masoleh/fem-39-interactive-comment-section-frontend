@@ -17,50 +17,47 @@ function Sort() {
 		<div className="sort">
 			<span className="sort__text">order by</span>
 			<span className="sort__text">&#91;</span>
-			<button
-				className={`sort__button ${
-					params.sort_by === OPTS.DATE
-						? "sort__button--selected"
-						: "sort__button--unselected"
-				}`}
+			<Button
+				selected={params.sort_by === OPTS.DATE}
 				onClick={() => handleSort_by(OPTS.DATE)}
 			>
 				date
-			</button>
-			<button
-				className={`sort__button ${
-					params.sort_by === OPTS.SCORE
-						? "sort__button--selected"
-						: "sort__button--unselected"
-				}`}
+			</Button>
+			<Button
+				selected={params.sort_by === OPTS.SCORE}
 				onClick={() => handleSort_by(OPTS.SCORE)}
 			>
 				score
-			</button>
+			</Button>
 			<span className="sort__text">|</span>
-			<button
-				className={`sort__button ${
-					params.order === OPTS.ASC
-						? "sort__button--selected"
-						: "sort__button--unselected"
-				}`}
+			<Button
+				selected={params.order === OPTS.ASC}
 				onClick={() => handleOrder(OPTS.ASC)}
 			>
 				asc.
-			</button>
-			<button
-				className={`sort__button ${
-					params.order === OPTS.DESC
-						? "sort__button--selected"
-						: "sort__button--unselected"
-				}`}
+			</Button>
+			<Button
+				selected={params.order === OPTS.DESC}
 				onClick={() => handleOrder(OPTS.DESC)}
 			>
 				desc.
-			</button>
+			</Button>
 			<span className="sort__text">&#93;</span>
 		</div>
 	);
 }
 
 export default Sort;
+
+function Button({ selected, onClick, children }) {
+	return (
+		<button
+			className={`sort__button ${
+				selected ? "sort__button--selected" : "sort__button--unselected"
+			}`}
+			onClick={onClick}
+		>
+			{children}
+		</button>
+	);
+}

@@ -4,7 +4,7 @@ import {
 	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useParams } from "react-router-dom";
 
 import { AuthContext } from "./AuthContext";
 
@@ -24,10 +24,12 @@ export function PostsContextProvider({ children }) {
 	const queryClient = useQueryClient();
 	const { user } = useContext(AuthContext);
 	const [params, setParams] = useState({
+		from: 0,
 		sort_by: searchParams.get("sort_by") ?? OPTS.DATE,
 		order: searchParams.get("order") ?? OPTS.DESC,
 		page: 0,
 	});
+	const { from } = useParams();
 
 	useEffect(() => {
 		const sort_by = searchParams.get("sort_by");
@@ -43,13 +45,14 @@ export function PostsContextProvider({ children }) {
 
 	const { isLoading, error, data, fetchNextPage, hasNextPage } =
 		useInfiniteQuery(
-			["repoData", params.sort_by, params.order],
+			["repoData", from ?? 0, params.sort_by, params.order],
 			async ({ queryKey, pageParam = 0 }) => {
-				const [_, sort_by, order] = queryKey;
+				const [_, from, sort_by, order] = queryKey;
 				const route = "posts";
 				const options = new URLSearchParams({
-					sort_by: sort_by,
-					order: order,
+					from,
+					sort_by,
+					order,
 					page: pageParam,
 				});
 				const url = new URL(`${route}/?${options}`, BASE);

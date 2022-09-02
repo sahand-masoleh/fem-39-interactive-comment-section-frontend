@@ -1,0 +1,31 @@
+@use "@styles/common" as *;
+
+.continue {
+	position: absolute;
+	background-color: transparent;
+	border: none;
+	bottom: 1ch;
+	left: 0;
+	padding-left: inherit;
+	color: $c-p-moderate-blue;
+	text-decoration: none;
+	display: flex;
+	align-items: center;
+	gap: 0.5ch;
+
+	&:hover {
+		cursor: pointer;
+		color: $c-p-light-grayish-blue;
+	}
+
+	&__text,
+	&__text:visited {
+		font-size: 0.75rem;
+		color: inherit;
+	}
+
+	&__icon {
+		color: inherit;
+		height: 0.75rem;
+	}
+}

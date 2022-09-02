@@ -103,10 +103,13 @@ function Post({
 					/>
 
 					{hasHidden && (
-						<p className="post__more" onClick={() => handleHide(id, false)}>
-							{replies} {replies == 1 ? "reply" : "replies"}
-						</p>
+						<Continue replies={replies} unhide={() => handleHide(id, false)} />
 					)}
+
+					{replies > 0 && depth > 0 && depth % 3 === 0 && (
+						<Continue replies={replies} id={id} />
+					)}
+
 					{parent_id && (
 						<button className="post__scroll" onClick={goToParent}>
 							<UpIcon title="Go to parent" />
@@ -117,8 +120,6 @@ function Post({
 				{state.isReplying && (
 					<Reply handleSubmit={handleReply} avatar={user.avatar} />
 				)}
-
-				{depth > 0 && depth % 2 === 0 && <Continue />}
 			</div>
 		);
 }

@@ -44,7 +44,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 			<BrowserRouter>
 				<Routes>
 					<Route path="/" element={<AppWithContexts />}>
+						<Route path="from/:from" element={<></>} />
 						<Route path="auth" element={<Auth />} />
+						<Route path="*" element={<></>} />
 					</Route>
 				</Routes>
 			</BrowserRouter>
