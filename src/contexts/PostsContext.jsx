@@ -38,7 +38,6 @@ export function PostsContextProvider({ children }) {
 			setParams({
 				sort_by,
 				order,
-				page: 0,
 			});
 		}
 	}, [searchParams]);
@@ -64,7 +63,7 @@ export function PostsContextProvider({ children }) {
 			{
 				staleTime: Infinity,
 				getNextPageParam: (lastPage) => {
-					return lastPage.rows.length ? lastPage.page + 1 : undefined;
+					return lastPage.nextPage > -1 ? lastPage.nextPage : undefined;
 				},
 			}
 		);
