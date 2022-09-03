@@ -31,11 +31,12 @@ function useActions(id) {
 		isEditing: false,
 		isDeleting: false,
 	});
-	function dispatchLoginCheck(...args) {
-		if (user) {
+
+	function checkLogin(callback, ...args) {
+		if (!user) {
 			showToast(TOAST_MESSAGE.NOT_LOGGED_IN);
 		} else {
-			dispatch(...args);
+			callback(...args);
 		}
 	}
 
@@ -69,11 +70,11 @@ function useActions(id) {
 
 	return {
 		state,
-		dispatch: dispatchLoginCheck,
+		dispatch: (...args) => checkLogin(dispatch, ...args),
 		handleReply,
 		handleEdit,
-		handleAddVote,
-		handleRemoveVote,
+		handleAddVote: (...args) => checkLogin(handleAddVote, ...args),
+		handleRemoveVote: (...args) => checkLogin(handleRemoveVote, ...args),
 	};
 }
 
