@@ -47,20 +47,22 @@ export function PostsContextProvider({ children }) {
 			["repoData", from ?? 0, params.sort_by, params.order],
 			async ({ queryKey, pageParam = 0 }) => {
 				const [_, from, sort_by, order] = queryKey;
-				const route = "posts";
-				const options = new URLSearchParams({
+				const url = new URL("posts", BASE);
+				url.search = new URLSearchParams({
 					from,
 					sort_by,
 					order,
 					page: pageParam,
 				});
-				const url = new URL(`${route}/?${options}`, BASE);
 
-				const res = await fetch(url);
+				const res = await fetch(url, {
+					credentials: "include",
+				});
 				if (res.status !== 200) throw new Error("could not fetch");
 				return await res.json();
 			},
 			{
+				enabled: !!user || user === null,
 				staleTime: Infinity,
 				getNextPageParam: (lastPage) => {
 					return lastPage.nextPage > -1 ? lastPage.nextPage : undefined;
@@ -71,7 +73,8 @@ export function PostsContextProvider({ children }) {
 	const reply = useMutation(
 		// TODO: spinning wheel
 		async ({ parent_id, text }) => {
-			let res = await fetch("http://localhost:4000/posts", {
+			const url = new URL("posts", BASE);
+			let res = await fetch(url, {
 				method: "POST",
 				credentials: "include",
 				headers: {
@@ -84,8 +87,7 @@ export function PostsContextProvider({ children }) {
 			return res;
 		},
 		{
-			onSuccess: (row) => {
-				const { parent_id } = row;
+			onSuccess: ({ parent_id }) => {
 				const newPost = {
 					...row,
 					name: user.name,
@@ -113,7 +115,8 @@ export function PostsContextProvider({ children }) {
 
 	const edit = useMutation(
 		async ({ id, text }) => {
-			let res = await fetch("http://localhost:4000/posts", {
+			const url = new URL("posts", BASE);
+			let res = await fetch(url, {
 				method: "PATCH",
 				credentials: "include",
 				headers: {
@@ -126,9 +129,8 @@ export function PostsContextProvider({ children }) {
 			return res;
 		},
 		{
-			onSuccess: (row) => {
+			onSuccess: ({ id, text }) => {
 				// TODO: mark edited
-				const { id, text } = row;
 				queryClient.setQueriesData(["repoData"], (repo) => {
 					for (let page of repo.pages) {
 						const index = page.rows.findIndex((e) => e.id === id);
@@ -146,7 +148,8 @@ export function PostsContextProvider({ children }) {
 
 	const remove = useMutation(
 		async ({ id }) => {
-			let res = await fetch("http://localhost:4000/posts", {
+			const url = new URL("posts", BASE);
+			let res = await fetch(url, {
 				method: "DELETE",
 				credentials: "include",
 				headers: {
@@ -159,8 +162,7 @@ export function PostsContextProvider({ children }) {
 			return res;
 		},
 		{
-			onSuccess: (row) => {
-				const { id } = row;
+			onSuccess: ({ id }) => {
 				const deleted = {
 					user_id: 1,
 					name: "",
@@ -184,8 +186,9 @@ export function PostsContextProvider({ children }) {
 
 	const addVote = useMutation(
 		async ({ id, is_up }) => {
-			let res = await fetch("http://localhost:4000/upvotes", {
-				method: "post",
+			const url = new URL("upvotes", BASE);
+			let res = await fetch(url, {
+				method: "POST",
 				credentials: "include",
 				headers: {
 					"Content-Type": "application/json",
@@ -197,7 +200,70 @@ export function PostsContextProvider({ children }) {
 			return res;
 		},
 		{
-			onSuccess: (row) => {},
+			onSuccess: ({ post_id, is_up }) => {
+				queryClient.setQueriesData(["repoData"], (repo) => {
+					for (let page of repo.pages) {
+						const index = page.rows.findIndex((e) => e.id === post_id);
+						if (index === -1) {
+							continue;
+						} else {
+							// remove the effect of the previous vote
+							const prevVote = page.rows[index].is_up;
+							if (prevVote === true) {
+								page.rows[index].votes--;
+							} else if (prevVote === false) {
+								page.rows[index].votes++;
+							}
+							// add the new vote
+							page.rows[index].is_up = is_up;
+							if (is_up === true) {
+								page.rows[index].votes++;
+							} else if (is_up === false) {
+								page.rows[index].votes--;
+							}
+							return repo;
+						}
+					}
+				});
+			},
+		}
+	);
+
+	const removeVote = useMutation(
+		async ({ id }) => {
+			const url = new URL("upvotes", BASE);
+			let res = await fetch(url, {
+				credentials: "include",
+				method: "DELETE",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ id }),
+			});
+			res = await res.json();
+			if (res.success === false) throw new Error(res.message);
+			return res;
+		},
+		{
+			onSuccess: ({ post_id }) => {
+				queryClient.setQueriesData(["repoData"], (repo) => {
+					for (let page of repo.pages) {
+						const index = page.rows.findIndex((e) => e.id === post_id);
+						if (index === -1) {
+							continue;
+						} else {
+							const prevVote = page.rows[index].is_up;
+							if (prevVote === true) {
+								page.rows[index].votes--;
+							} else if (prevVote === false) {
+								page.rows[index].votes++;
+							}
+							page.rows[index].is_up = null;
+						}
+						return repo;
+					}
+				});
+			},
 		}
 	);
 
@@ -210,6 +276,8 @@ export function PostsContextProvider({ children }) {
 				reply: (parent_id, text) => reply.mutate({ parent_id, text }),
 				remove: (id) => remove.mutate({ id }),
 				edit: (id, text) => edit.mutate({ id, text }),
+				addVote: (id, is_up) => addVote.mutate({ id, is_up }),
+				removeVote: (id) => removeVote.mutate({ id }),
 				params,
 				setParams,
 				setSearchParams,

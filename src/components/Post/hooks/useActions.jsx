@@ -1,6 +1,8 @@
 import { useReducer, useContext, useEffect } from "react";
 import { PostsContext } from "@contexts/PostsContext";
 import { ModalContext } from "@contexts/ModalContext";
+import { AuthContext } from "@contexts/AuthContext";
+import { ToastContext, TOAST_MESSAGE } from "@contexts/ToastContext";
 
 function reducer(state, action) {
 	switch (action.type) {
@@ -17,19 +19,37 @@ function reducer(state, action) {
 			return state;
 	}
 }
-// TODO: remove post_id from fucntions
+
 function useActions(id) {
-	const { reply, remove, edit } = useContext(PostsContext);
+	const { reply, remove, edit, addVote, removeVote } = useContext(PostsContext);
+	const { user } = useContext(AuthContext);
+	const getCofirmation = useContext(ModalContext);
+	const { showToast } = useContext(ToastContext);
+
 	const [state, dispatch] = useReducer(reducer, {
 		isReplying: false,
 		isEditing: false,
 		isDeleting: false,
 	});
-	const getCofirmation = useContext(ModalContext);
+	function dispatchLoginCheck(...args) {
+		if (user) {
+			showToast(TOAST_MESSAGE.NOT_LOGGED_IN);
+		} else {
+			dispatch(...args);
+		}
+	}
 
 	useEffect(() => {
 		if (state.isDeleting) handleDelete();
 	}, [state]);
+	async function handleDelete() {
+		try {
+			await getCofirmation();
+			remove(id);
+		} finally {
+			dispatch({ type: "deleting" });
+		}
+	}
 
 	function handleReply(text) {
 		reply(id, text);
@@ -39,15 +59,22 @@ function useActions(id) {
 		edit(id, text);
 		dispatch({ type: "editing" });
 	}
-	async function handleDelete() {
-		try {
-			await getCofirmation();
-			remove(id);
-		} catch {}
-		dispatch({ type: "deleting" });
+
+	function handleAddVote(is_up) {
+		addVote(id, is_up);
+	}
+	function handleRemoveVote() {
+		removeVote(id);
 	}
 
-	return { state, dispatch, handleReply, handleEdit };
+	return {
+		state,
+		dispatch: dispatchLoginCheck,
+		handleReply,
+		handleEdit,
+		handleAddVote,
+		handleRemoveVote,
+	};
 }
 
 export default useActions;

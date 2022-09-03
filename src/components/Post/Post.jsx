@@ -32,6 +32,7 @@ function Post({
 	votes,
 	replies,
 	path,
+	is_up,
 }) {
 	const { hidden, handleHide } = useContext(HiddenContext);
 	const isHidden = hidden.some((e) => path.includes(e));
@@ -46,7 +47,14 @@ function Post({
 	const { user } = useContext(AuthContext);
 	const isCurrentUser = user_id === user?.id;
 
-	const { state, dispatch, handleReply, handleEdit } = useActions(id);
+	const {
+		state,
+		dispatch,
+		handleReply,
+		handleEdit,
+		handleAddVote,
+		handleRemoveVote,
+	} = useActions(id);
 
 	const isDeleted = user_id === 1;
 
@@ -81,7 +89,12 @@ function Post({
 				<div className={`post ${className}`} onAnimationEnd={onAnimationEnd}>
 					{!isDeleted && (
 						<>
-							<Voting votes={votes} />
+							<Voting
+								votes={votes}
+								handleAddVote={handleAddVote}
+								handleRemoveVote={handleRemoveVote}
+								is_up={is_up}
+							/>
 							<Info
 								user_id={user_id}
 								name={name}

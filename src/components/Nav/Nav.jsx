@@ -8,19 +8,7 @@ function Nav() {
 	const { getAuthLink, user, status } = useContext(AuthContext);
 
 	function renderElement() {
-		if (status === "loading") {
-			return (
-				<>
-					<GithubLogo
-						title="Github"
-						className="nav__avatar nav__avatar--loading"
-					/>
-					<a href={getAuthLink()} className="nav__text">
-						Checking...
-					</a>
-				</>
-			);
-		} else if (user) {
+		if (user) {
 			return (
 				<>
 					<div className="nav__avatar nav__avatar--round image">
@@ -31,6 +19,18 @@ function Nav() {
 						/>
 					</div>
 					<span className="nav__text">{user.name}</span>
+				</>
+			);
+		} else if (status === "loading") {
+			return (
+				<>
+					<GithubLogo
+						title="Github"
+						className="nav__avatar nav__avatar--loading"
+					/>
+					<a href={getAuthLink()} className="nav__text">
+						Checking...
+					</a>
 				</>
 			);
 		} else {

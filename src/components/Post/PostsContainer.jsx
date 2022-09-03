@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { PostsContext } from "@contexts/PostsContext";
 import Sort from "@components/Sort/Sort";
 import Back from "@components/Back/Back";
@@ -43,6 +43,7 @@ function postMap(data, from) {
 					votes={post.votes}
 					replies={post.replies}
 					path={post.path.slice(0, -1)}
+					is_up={post.is_up}
 				/>
 			);
 		}
