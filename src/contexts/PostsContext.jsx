@@ -106,10 +106,15 @@ export function PostsContextProvider({ children }) {
 							} else {
 								const parent = page.rows[parentIndex];
 								parent.replies++;
-								newPost.path = [...parent.path, parent_id];
-								newPost.depth = parent.depth + 1;
 
-								page.rows.splice(parentIndex, 1, parent, newPost);
+								if (parent.depth < 3) {
+									newPost.path = [...parent.path, parent_id];
+									newPost.depth = parent.depth + 1;
+
+									page.rows.splice(parentIndex, 1, parent, newPost);
+								} else {
+									queryClient.invalidateQueries(["repoData", parent.id]);
+								}
 								return repo;
 							}
 						}

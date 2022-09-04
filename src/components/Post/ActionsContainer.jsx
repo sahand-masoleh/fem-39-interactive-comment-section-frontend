@@ -1,3 +1,4 @@
+import "./Action.scss";
 import { ReactComponent as ReplyIcon } from "@assets/icon-reply.svg";
 import { ReactComponent as EditIcon } from "@assets/icon-edit.svg";
 import { ReactComponent as DeleteIcon } from "@assets/icon-delete.svg";

@@ -12,7 +12,21 @@
 	gap: 1rem;
 	margin-top: 0.5rem;
 
+	@media screen and (max-width: $break-point-2) {
+		flex-wrap: wrap;
+		justify-content: flex-end;
+
+		&__text {
+			flex-basis: 100%;
+			width: 0;
+		}
+	}
+
 	&__avatar {
-		height: 3rem;
+		max-width: 3rem;
+
+		@media screen and (max-width: $break-point-2) {
+			display: none;
+		}
 	}
 }

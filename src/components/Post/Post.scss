@@ -31,6 +31,25 @@
 		grid-template-columns: min-content auto auto;
 		row-gap: 1rem;
 		column-gap: 1.5rem;
+
+		@media screen and (max-width: $break-point-1) {
+			grid-template-areas:
+				"info info"
+				"text text"
+				"voting action"
+				"button button";
+			grid-template-columns: unset;
+		}
+
+		@media screen and (max-width: $break-point-3) {
+			grid-template-areas:
+				"info"
+				"text"
+				"voting"
+				"action"
+				"button";
+			grid-template-columns: unset;
+		}
 	}
 
 	&--focused {
@@ -101,6 +120,10 @@
 		height: 2rem;
 		gap: 1ch;
 		justify-content: flex-end;
+
+		@media screen and (max-width: $break-point-1) {
+			height: unset;
+		}
 	}
 
 	&__button {
@@ -135,38 +158,5 @@
 			cursor: pointer;
 			color: $c-p-moderate-blue;
 		}
-	}
-}
-
-.action {
-	display: flex;
-	align-items: center;
-	gap: 0.5rem;
-	background-color: transparent;
-	border: none;
-
-	&:hover {
-		cursor: pointer;
-	}
-
-	&--primary {
-		color: $c-p-moderate-blue;
-
-		&:hover {
-			color: $c-p-light-grayish-blue;
-		}
-	}
-
-	&--secondary {
-		color: $c-p-soft-red;
-
-		&:hover {
-			color: $c-p-pale-red;
-		}
-	}
-
-	&__label {
-		font-size: 1rem;
-		font-weight: 500;
 	}
 }

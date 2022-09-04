@@ -18,33 +18,35 @@ function Sort() {
 			<span className="sort__text">comments</span>
 			<div className="sort__line"></div>
 			<span className="sort__text">order by</span>
-			<span className="sort__text">&#91;</span>
-			<Button
-				selected={params.sort_by === OPTS.DATE}
-				onClick={() => handleSort_by(OPTS.DATE)}
-			>
-				date
-			</Button>
-			<Button
-				selected={params.sort_by === OPTS.SCORE}
-				onClick={() => handleSort_by(OPTS.SCORE)}
-			>
-				score
-			</Button>
-			<span className="sort__text">|</span>
-			<Button
-				selected={params.order === OPTS.ASC}
-				onClick={() => handleOrder(OPTS.ASC)}
-			>
-				asc.
-			</Button>
-			<Button
-				selected={params.order === OPTS.DESC}
-				onClick={() => handleOrder(OPTS.DESC)}
-			>
-				desc.
-			</Button>
-			<span className="sort__text">&#93;</span>
+			<div className="sort__button-container">
+				<span className="sort__text">&#91;</span>
+				<Button
+					selected={params.sort_by === OPTS.DATE}
+					onClick={() => handleSort_by(OPTS.DATE)}
+				>
+					date
+				</Button>
+				<Button
+					selected={params.sort_by === OPTS.SCORE}
+					onClick={() => handleSort_by(OPTS.SCORE)}
+				>
+					score
+				</Button>
+				<span className="sort__text">|</span>
+				<Button
+					selected={params.order === OPTS.ASC}
+					onClick={() => handleOrder(OPTS.ASC)}
+				>
+					asc.
+				</Button>
+				<Button
+					selected={params.order === OPTS.DESC}
+					onClick={() => handleOrder(OPTS.DESC)}
+				>
+					desc.
+				</Button>
+				<span className="sort__text">&#93;</span>
+			</div>
 		</div>
 	);
 }

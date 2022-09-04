@@ -22,7 +22,7 @@ function Reply({ handleReply, handleReplyOrphan, orphan }) {
 	function handleSubmit(event) {
 		event.preventDefault();
 		if (!input) return;
-		if (user) {
+		if (!user) {
 			showToast(TOAST_MESSAGE.NOT_LOGGED_IN);
 			return;
 		}

@@ -9,6 +9,10 @@ $c-n-light-gray: #eaecf1; //
 $c-n-very-light-gray: #f5f6fa; //main background
 $c-n-white: #ffffff;
 
+$break-point-1: 640px;
+$break-point-2: 480px;
+$break-point-3: 320px;
+
 $max-width: 45rem;
 @mixin max-width($width: $max-width) {
 	max-width: $width;
@@ -61,10 +65,15 @@ $max-width: 45rem;
 	border-radius: 0.5rem;
 	background-color: $c-n-white;
 
+	@media screen and (max-width: $break-point-1) {
+		padding: 1.5rem 1rem 1rem;
+	}
+
 	&__avatar {
 		border-radius: 50%;
 		overflow: hidden;
-		height: 2rem;
+		max-width: 2rem;
+		width: 100%;
 		aspect-ratio: 1;
 		background-color: $c-n-light-gray;
 		display: grid;
@@ -81,6 +90,7 @@ $max-width: 45rem;
 		color: $c-n-grayish-blue;
 		line-height: 2.5ch;
 		flex-grow: 1;
+		min-width: 0;
 		white-space: pre-line;
 
 		&--edit {

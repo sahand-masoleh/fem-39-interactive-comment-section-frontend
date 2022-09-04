@@ -1,0 +1,34 @@
+@use "@styles/common" as *;
+
+.action {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	background-color: transparent;
+	border: none;
+
+	&:hover {
+		cursor: pointer;
+	}
+
+	&--primary {
+		color: $c-p-moderate-blue;
+
+		&:hover {
+			color: $c-p-light-grayish-blue;
+		}
+	}
+
+	&--secondary {
+		color: $c-p-soft-red;
+
+		&:hover {
+			color: $c-p-pale-red;
+		}
+	}
+
+	&__label {
+		font-size: 1rem;
+		font-weight: 500;
+	}
+}

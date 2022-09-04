@@ -10,9 +10,15 @@
 	flex-shrink: 0;
 	margin: 0 0.5rem;
 	box-sizing: content-box;
-	border: 0.4rem solid $c-n-very-light-gray;
+	border: solid $c-n-very-light-gray;
+	border-width: 0.4rem;
 	border-top: none;
 	border-bottom: none;
+
+	@media screen and (max-width: $break-point-1) {
+		border-width: 0.15rem;
+		margin: 0 0.25rem;
+	}
 
 	&--unhovered {
 		background-color: $c-n-light-gray;

@@ -48,6 +48,21 @@ export function AuthContextProvider({ children }) {
 		}
 	);
 
+	const logout = useMutation(
+		async () => {
+			const res = await fetch("http://localhost:4000/users/logout", {
+				method: "POST",
+			});
+			if (res.status !== 200) throw new Error("an error occured");
+			return null;
+		},
+		{
+			onSuccess: () => {
+				queryClient.setQueriesData(["userData"], null);
+			},
+		}
+	);
+
 	function getAuthLink() {
 		let state = sessionStorage.getItem("state");
 		if (!state) {
@@ -70,7 +85,9 @@ export function AuthContextProvider({ children }) {
 	}
 
 	return (
-		<AuthContext.Provider value={{ getAuthLink, checkCode, user, status }}>
+		<AuthContext.Provider
+			value={{ getAuthLink, checkCode, user, status, logout: logout.mutate }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);
