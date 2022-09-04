@@ -87,28 +87,36 @@ export function PostsContextProvider({ children }) {
 			return res;
 		},
 		{
-			onSuccess: ({ parent_id }) => {
+			onSuccess: ({ parent_id, ...row }) => {
 				const newPost = {
 					...row,
+					parent_id,
 					name: user.name,
 					avatar_url: user.avatar_url,
+					is_up: null,
 				};
-				queryClient.setQueriesData(["repoData"], (repo) => {
-					for (let page of repo.pages) {
-						const parentIndex = page.rows.findIndex((e) => e.id === parent_id);
-						if (parentIndex === -1) {
-							continue;
-						} else {
-							const parent = page.rows[parentIndex];
-							parent.replies++;
-							newPost.path = [...parent.path, parent_id];
-							newPost.depth = parent.depth + 1;
+				if (parent_id) {
+					queryClient.setQueriesData(["repoData"], (repo) => {
+						for (let page of repo.pages) {
+							const parentIndex = page.rows.findIndex(
+								(e) => e.id === parent_id
+							);
+							if (parentIndex === -1) {
+								continue;
+							} else {
+								const parent = page.rows[parentIndex];
+								parent.replies++;
+								newPost.path = [...parent.path, parent_id];
+								newPost.depth = parent.depth + 1;
 
-							page.rows.splice(parentIndex, 1, parent, newPost);
-							return repo;
+								page.rows.splice(parentIndex, 1, parent, newPost);
+								return repo;
+							}
 						}
-					}
-				});
+					});
+				} else {
+					queryClient.invalidateQueries(["repoData"]);
+				}
 			},
 		}
 	);

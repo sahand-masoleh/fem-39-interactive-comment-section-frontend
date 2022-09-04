@@ -47,4 +47,52 @@ $max-width: 45rem;
 		background-color: $c-n-grayish-blue;
 		flex-grow: 1;
 	}
+
+	&--disabled {
+		cursor: not-allowed;
+		background-color: $c-p-light-grayish-blue;
+	}
+}
+
+@mixin post {
+	width: 100%;
+	padding: 1.5rem;
+	margin-top: 1em;
+	border-radius: 0.5rem;
+	background-color: $c-n-white;
+
+	&__avatar {
+		border-radius: 50%;
+		overflow: hidden;
+		height: 2rem;
+		aspect-ratio: 1;
+		background-color: $c-n-light-gray;
+		display: grid;
+		place-items: center;
+
+		&--empty {
+			color: $c-n-grayish-blue;
+			padding: 0.5rem;
+		}
+	}
+
+	&__text {
+		grid-area: text;
+		color: $c-n-grayish-blue;
+		line-height: 2.5ch;
+		flex-grow: 1;
+		white-space: pre-line;
+
+		&--edit {
+			padding: 1ch;
+			border-radius: 0.5rem;
+			border: none;
+			outline: 1px solid $c-n-dark-blue;
+			resize: none;
+		}
+
+		&--deleted {
+			font-style: italic;
+		}
+	}
 }

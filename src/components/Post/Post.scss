@@ -18,12 +18,8 @@
 }
 
 .post {
+	@include post;
 	grid-area: post;
-	width: 100%;
-	padding: 1.5rem;
-	margin-top: 1em;
-	border-radius: 0.5rem;
-	background-color: $c-n-white;
 	position: relative;
 
 	&--normal {
@@ -74,21 +70,13 @@
 		gap: 1ch;
 	}
 
-	&__avatar {
-		border-radius: 50%;
-		overflow: hidden;
-		height: 2rem;
-		aspect-ratio: 1/1;
-		background-color: $c-n-light-gray;
-
-		&--empty {
-			color: $c-n-grayish-blue;
-		}
-	}
-
 	&__name {
 		font-weight: 500;
 		color: $c-n-dark-blue;
+
+		&--link {
+			cursor: pointer;
+		}
 	}
 
 	&__you {
@@ -113,25 +101,6 @@
 		height: 2rem;
 		gap: 1ch;
 		justify-content: flex-end;
-	}
-
-	&__text {
-		grid-area: text;
-		color: $c-n-grayish-blue;
-		line-height: 2.5ch;
-		flex-grow: 1;
-
-		&--edit {
-			padding: 1ch;
-			border-radius: 0.5rem;
-			border: none;
-			outline: 1px solid $c-n-dark-blue;
-			resize: none;
-		}
-
-		&--deleted {
-			font-style: italic;
-		}
 	}
 
 	&__button {
@@ -199,23 +168,5 @@
 	&__label {
 		font-size: 1rem;
 		font-weight: 500;
-	}
-}
-
-.reply-wrapper {
-	grid-area: reply;
-	display: flex;
-}
-
-.reply {
-	@extend .post;
-	display: flex;
-	align-items: flex-start;
-	gap: 1rem;
-	margin-top: 0.5rem;
-
-	&__avatar {
-		@extend .post__avatar;
-		height: 3rem;
 	}
 }

@@ -15,8 +15,8 @@ import Info from "./Info";
 import ActionsContainer from "./ActionsContainer";
 import Voting from "./Voting";
 import Text from "./Text";
-import Reply from "./Reply";
 import Continue from "./Continue";
+import Reply from "@components/Reply/Reply";
 
 import { ReactComponent as UpIcon } from "@assets/icon-up.svg";
 
@@ -27,6 +27,7 @@ function Post({
 	depth,
 	name,
 	avatar_url,
+	url,
 	date,
 	text,
 	votes,
@@ -100,6 +101,7 @@ function Post({
 								name={name}
 								date={date}
 								avatarUrl={avatar_url}
+								url={url}
 								isCurrentUser={isCurrentUser}
 							/>
 							<ActionsContainer
@@ -131,7 +133,7 @@ function Post({
 				</div>
 
 				{state.isReplying && (
-					<Reply handleSubmit={handleReply} avatar={user.avatar} />
+					<Reply handleReply={handleReply} avatar={user.avatar} />
 				)}
 			</div>
 		);

@@ -15,6 +15,8 @@ function Sort() {
 
 	return (
 		<div className="sort">
+			<span className="sort__text">comments</span>
+			<div className="sort__line"></div>
 			<span className="sort__text">order by</span>
 			<span className="sort__text">&#91;</span>
 			<Button

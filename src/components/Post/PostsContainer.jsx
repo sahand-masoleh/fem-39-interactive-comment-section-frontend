@@ -38,6 +38,7 @@ function postMap(data, from) {
 					depth={post.depth}
 					name={post.name}
 					avatar_url={post.avatar_url}
+					url={post.url}
 					date={post.date}
 					text={post.text}
 					votes={post.votes}
