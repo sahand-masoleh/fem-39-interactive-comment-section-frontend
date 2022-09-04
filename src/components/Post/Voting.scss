@@ -12,7 +12,17 @@
 	font-weight: 500;
 
 	&__vote-count {
-		color: $c-p-moderate-blue;
+		&--zero {
+			color: $c-p-light-grayish-blue;
+		}
+
+		&--positive {
+			color: $c-p-moderate-blue;
+		}
+
+		&--negative {
+			color: $c-p-soft-red;
+		}
 	}
 
 	&__button {
@@ -20,15 +30,17 @@
 		width: 100%;
 		height: 100%;
 		background-color: transparent;
+		cursor: pointer;
 
 		&--uncast {
 			color: $c-p-light-grayish-blue;
 		}
 
-		&--cast,
-		&:hover {
-			cursor: pointer;
+		&--upvote {
 			color: $c-p-moderate-blue;
+		}
+		&--downvote {
+			color: $c-p-soft-red;
 		}
 	}
 }

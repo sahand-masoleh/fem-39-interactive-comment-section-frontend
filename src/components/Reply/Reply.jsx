@@ -1,12 +1,14 @@
 import "./Reply.scss";
 import { useState, useRef, useContext, useEffect } from "react";
 import { AuthContext } from "@/contexts/AuthContext";
+import { ToastContext, TOAST_MESSAGE } from "@contexts/ToastContext";
 import { ReactComponent as PersonIcon } from "@assets/icon-person.svg";
 
 function Reply({ handleReply, handleReplyOrphan, orphan }) {
 	const [input, setInput] = useState("");
 	const textareaRef = useRef();
 	const { user } = useContext(AuthContext);
+	const showToast = orphan ? useContext(ToastContext).showToast : null;
 
 	useEffect(() => {
 		resize();
@@ -20,6 +22,10 @@ function Reply({ handleReply, handleReplyOrphan, orphan }) {
 	function handleSubmit(event) {
 		event.preventDefault();
 		if (!input) return;
+		if (user) {
+			showToast(TOAST_MESSAGE.NOT_LOGGED_IN);
+			return;
+		}
 
 		if (!orphan) {
 			handleReply(input);
@@ -50,6 +56,7 @@ function Reply({ handleReply, handleReplyOrphan, orphan }) {
 					<PersonIcon className="reply__avatar reply__avatar--empty" />
 				)}
 				<textarea
+					autoFocus
 					className="reply__text reply__text--edit"
 					value={input}
 					onChange={handleTextEdit}

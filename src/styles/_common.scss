@@ -87,8 +87,13 @@ $max-width: 45rem;
 			padding: 1ch;
 			border-radius: 0.5rem;
 			border: none;
-			outline: 1px solid $c-n-dark-blue;
+			outline: 1px solid;
+			outline-color: $c-n-light-gray;
 			resize: none;
+
+			&:focus {
+				outline-color: $c-n-grayish-blue;
+			}
 		}
 
 		&--deleted {

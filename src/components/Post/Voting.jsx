@@ -15,14 +15,27 @@ function Voting({ votes, handleAddVote, handleRemoveVote, is_up }) {
 		<div className="post__voting voting">
 			<Button
 				Icon={PlusButton}
-				title="upvote"
+				label="upvote"
 				onClick={() => handleVote(true)}
 				cast={is_up === true}
 			/>
-			<p className="voting__vote-count">{votes}</p>
+			<p
+				className={`
+			voting__vote-count
+			 ${
+					votes > 0
+						? "voting__vote-count--positive"
+						: votes < 0
+						? "voting__vote-count--negative"
+						: "voting__vote-count--zero"
+				}
+			`}
+			>
+				{votes}
+			</p>
 			<Button
 				Icon={MinusButton}
-				title="downvote"
+				label="downvote"
 				onClick={() => handleVote(false)}
 				cast={is_up === false}
 			/>
@@ -31,13 +44,22 @@ function Voting({ votes, handleAddVote, handleRemoveVote, is_up }) {
 }
 export default Voting;
 
-function Button({ Icon, title, onClick, cast }) {
+function Button({ Icon, label, onClick, cast }) {
 	return (
 		<button
-			className={`voting__button voting__button${cast ? "--cast" : "--uncast"}`}
+			className={`voting__button voting__button${
+				!cast
+					? "--uncast"
+					: label === "upvote"
+					? "--upvote"
+					: label === "downvote"
+					? "--downvote"
+					: ""
+			}`}
 			onClick={onClick}
+			aria-label={label}
 		>
-			<Icon title={title} className="voting__icon" />
+			<Icon title={label} className="voting__icon" />
 		</button>
 	);
 }
