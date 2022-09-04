@@ -13,11 +13,18 @@ function Modal({ accept, refuse }) {
 		if (event.key === "Escape") refuse();
 	}
 
+	function handleModalClick(event) {
+		if (event.currentTarget === event.target) {
+			refuse();
+		}
+	}
+
 	return createPortal(
 		<div
 			className="modal"
 			ref={modalRef}
 			onKeyDown={handleKeyDown}
+			onClick={handleModalClick}
 			tabIndex={0}
 		>
 			<div className="dialog">

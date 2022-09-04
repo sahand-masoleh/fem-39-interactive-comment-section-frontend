@@ -1,0 +1,49 @@
+@use "@styles/common" as *;
+
+.footer-wrapper {
+	margin-top: auto;
+	background-color: $c-n-white;
+	border-top: 2px solid $c-n-light-gray;
+}
+
+.footer {
+	@include max-width;
+	padding: 1rem;
+	min-height: 3rem;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 1rem;
+	align-items: center;
+	justify-content: space-between;
+	font-weight: 500;
+
+	&__attribution {
+		font-size: 1rem;
+		color: $c-n-grayish-blue;
+		line-height: 2.5ch;
+	}
+
+	&__link {
+		color: $c-p-moderate-blue;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	&__socials {
+		display: flex;
+		gap: 0.5rem;
+	}
+
+	&__icon {
+		height: 1.5rem;
+		aspect-ratio: 1;
+		color: $c-n-grayish-blue;
+
+		&:hover {
+			color: $c-p-moderate-blue;
+		}
+	}
+}

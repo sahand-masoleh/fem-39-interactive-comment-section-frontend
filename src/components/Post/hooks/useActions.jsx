@@ -47,6 +47,7 @@ function useActions(id) {
 		try {
 			await getCofirmation();
 			remove(id);
+		} catch {
 		} finally {
 			dispatch({ type: "deleting" });
 		}

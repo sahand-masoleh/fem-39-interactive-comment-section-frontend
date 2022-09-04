@@ -5,13 +5,17 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 export const AuthContext = createContext();
 const CLIENT_ID = "61bd93401da3bfc14b01";
 
+import serverURL from "@utils/serverURL";
+const BASE = serverURL();
+
 export function AuthContextProvider({ children }) {
 	const queryClient = useQueryClient();
 
 	const { status, data: user } = useQuery(
 		["userData"],
 		async () => {
-			const res = await fetch("http://localhost:4000/users/check", {
+			const url = new URL("users/check", BASE);
+			const res = await fetch(url, {
 				credentials: "include",
 			});
 			if (res.status === 200) {
@@ -30,7 +34,8 @@ export function AuthContextProvider({ children }) {
 
 	const login = useMutation(
 		async (code) => {
-			const res = await fetch("http://localhost:4000/users/login", {
+			const url = new URL("users/login", BASE);
+			const res = await fetch(url, {
 				method: "POST",
 				credentials: "include",
 				headers: {
@@ -50,7 +55,8 @@ export function AuthContextProvider({ children }) {
 
 	const logout = useMutation(
 		async () => {
-			const res = await fetch("http://localhost:4000/users/logout", {
+			const url = new URL("users/logout", BASE);
+			const res = await fetch(url, {
 				method: "POST",
 			});
 			if (res.status !== 200) throw new Error("an error occured");

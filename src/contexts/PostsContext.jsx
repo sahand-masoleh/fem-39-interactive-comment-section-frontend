@@ -10,7 +10,8 @@ import { AuthContext } from "./AuthContext";
 
 export const PostsContext = createContext();
 
-const BASE = "http://localhost:4000";
+import serverURL from "@utils/serverURL";
+const BASE = serverURL();
 
 export const OPTS = {
 	DATE: "date",
