@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 
-function Text({ text, isEditing, isDeleted, handleSubmit }) {
+function Text({ text, is_edited, isEditing, isDeleted, handleSubmit }) {
 	const [editedText, setEditedText] = useState();
 	const textareaRef = useRef();
 
@@ -44,8 +44,8 @@ function Text({ text, isEditing, isDeleted, handleSubmit }) {
 		return (
 			<p
 				className={`post__text post__text--normal ${
-					isDeleted ? "post__text--deleted" : null
-				}`}
+					isDeleted ? "post__text--deleted" : ""
+				} ${is_edited && !isDeleted ? "post__text--edited" : ""}`}
 			>
 				{isDeleted ? "[deleted]" : text}
 			</p>

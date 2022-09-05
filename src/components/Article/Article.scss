@@ -1,0 +1,91 @@
+@use "@styles/common" as *;
+
+.article {
+	background-color: $c-n-white;
+	padding: 1rem min(2rem, 5%) 0.5rem;
+	margin: 1rem 0;
+	outline: 2px solid $c-n-light-gray;
+	outline-offset: 0.5rem;
+	line-height: 2.5ch;
+
+	&__title {
+		color: $c-n-dark-blue;
+		font-weight: 500;
+
+		&--primary {
+			margin: 1ch 0;
+			font-size: 1.6rem;
+		}
+		&--secondary {
+			margin: 0.5ch 0;
+			font-size: 1.2rem;
+		}
+
+		&--tertiary {
+			font-size: 1rem;
+			font-weight: 400;
+			cursor: pointer;
+		}
+	}
+
+	&__text {
+		color: $c-n-grayish-blue;
+		margin-bottom: 1ch;
+
+		&--small {
+			font-size: 0.8rem;
+			line-height: 2ch;
+			color: $c-n-grayish-blue;
+		}
+	}
+
+	&__link {
+		color: $c-p-moderate-blue;
+		text-decoration: none;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
+	&__divider {
+		border: none;
+		margin: 0.5ch 0;
+	}
+}
+
+.list {
+	margin: 0 0 1ch;
+	list-style: inside;
+	&__title {
+		display: inline;
+		color: $c-n-dark-blue;
+		font-weight: 400;
+		font-size: 1rem;
+		margin-right: 1ch;
+	}
+
+	&__text {
+		display: inline;
+		color: $c-n-grayish-blue;
+	}
+
+	&__link {
+		height: 1.5ch;
+		aspect-ratio: 1;
+		color: $c-n-dark-blue;
+	}
+}
+
+.info {
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	gap: 1ch;
+	font-size: 0.8rem;
+	border-top: 1px solid $c-n-light-gray;
+
+	& > * {
+		margin: 0;
+	}
+}

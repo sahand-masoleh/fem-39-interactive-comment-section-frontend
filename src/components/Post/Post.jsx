@@ -32,6 +32,7 @@ function Post({
 	text,
 	votes,
 	replies,
+	is_edited,
 	path,
 	is_up,
 }) {
@@ -47,6 +48,7 @@ function Post({
 
 	const { user } = useContext(AuthContext);
 	const isCurrentUser = user_id === user?.id;
+	const isOP = user_id === 80;
 
 	const {
 		state,
@@ -103,6 +105,7 @@ function Post({
 								avatarUrl={avatar_url}
 								url={url}
 								isCurrentUser={isCurrentUser}
+								isOP={isOP}
 							/>
 							<ActionsContainer
 								isCurrentUser={isCurrentUser}
@@ -112,6 +115,7 @@ function Post({
 					)}
 					<Text
 						text={text}
+						is_edited={is_edited}
 						isEditing={state.isEditing}
 						isDeleted={isDeleted}
 						handleSubmit={handleEdit}

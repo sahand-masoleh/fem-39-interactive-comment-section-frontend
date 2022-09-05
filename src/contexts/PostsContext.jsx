@@ -152,6 +152,7 @@ export function PostsContextProvider({ children }) {
 							continue;
 						} else {
 							page.rows[index].text = text;
+							page.rows[index].is_edited = true;
 							return repo;
 						}
 					}

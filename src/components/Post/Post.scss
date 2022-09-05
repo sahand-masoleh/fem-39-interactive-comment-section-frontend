@@ -87,6 +87,7 @@
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 1ch;
+		min-height: 2rem;
 	}
 
 	&__name {
@@ -100,7 +101,8 @@
 
 	&__you {
 		background-color: $c-p-moderate-blue;
-		padding: 0.25ch 0.5ch;
+		padding: 0 0.5ch;
+		height: 2ch;
 		border-radius: 0.25rem;
 		font-size: 0.8rem;
 		font-weight: 700;
@@ -117,12 +119,22 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		height: 2rem;
+		min-height: 2rem;
 		gap: 1ch;
 		justify-content: flex-end;
 
 		@media screen and (max-width: $break-point-1) {
 			height: unset;
+		}
+	}
+
+	&__text {
+		&--edited {
+			&::after {
+				content: "\A[edited]";
+				margin-left: 1ch;
+				font-style: italic;
+			}
 		}
 	}
 

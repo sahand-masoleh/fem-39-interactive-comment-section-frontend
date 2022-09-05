@@ -56,16 +56,15 @@ function Reply({ handleReply, handleReplyOrphan, orphan }) {
 					<PersonIcon className="reply__avatar reply__avatar--empty" />
 				)}
 				<textarea
-					autoFocus
+					autoFocus={!orphan}
 					className="reply__text reply__text--edit"
 					value={input}
 					onChange={handleTextEdit}
 					ref={textareaRef}
 				/>
 				<button
-					className={`reply__button button button--confirm ${
-						!input ? "button--disabled" : ""
-					}`}
+					className="reply__button button button--confirm"
+					disabled={!input}
 					onClick={handleSubmit}
 				>
 					{orphan ? "send" : "reply"}

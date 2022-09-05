@@ -6,7 +6,7 @@ const timeAgo = new TimeAgo("en-US");
 
 import { ReactComponent as PersonIcon } from "@assets/icon-person.svg";
 
-function Info({ name, avatarUrl, url, date, isCurrentUser }) {
+function Info({ name, avatarUrl, url, date, isCurrentUser, isOP }) {
 	const aRef = useRef();
 	function handleClick() {
 		aRef.current.click();
@@ -33,7 +33,11 @@ function Info({ name, avatarUrl, url, date, isCurrentUser }) {
 			>
 				{name}
 			</span>
-			{isCurrentUser && <span className="post__you">you</span>}
+			{isCurrentUser ? (
+				<span className="post__you">you</span>
+			) : isOP ? (
+				<span className="post__you">OP</span>
+			) : null}
 			<span className="post__date">{timeAgo.format(new Date(date))}</span>
 			<a href={url} ref={aRef} target="_blank" hidden></a>
 		</div>

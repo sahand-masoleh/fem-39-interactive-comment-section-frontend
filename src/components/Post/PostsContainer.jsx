@@ -43,6 +43,7 @@ function postMap(data, from) {
 					text={post.text}
 					votes={post.votes}
 					replies={post.replies}
+					is_edited={post.is_edited}
 					path={post.path.slice(0, -1)}
 					is_up={post.is_up}
 				/>

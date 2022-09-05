@@ -32,14 +32,14 @@ $max-width: 45rem;
 	text-transform: uppercase;
 	cursor: pointer;
 
+	&:hover:not(:disabled) {
+		opacity: 0.75;
+	}
+
 	&--confirm {
 		background-color: $c-p-moderate-blue;
 		max-width: 10ch;
 		width: 100%;
-
-		&:hover {
-			background-color: $c-p-light-grayish-blue;
-		}
 	}
 
 	&--yes {
@@ -52,7 +52,7 @@ $max-width: 45rem;
 		flex-grow: 1;
 	}
 
-	&--disabled {
+	&:disabled {
 		cursor: not-allowed;
 		background-color: $c-p-light-grayish-blue;
 	}

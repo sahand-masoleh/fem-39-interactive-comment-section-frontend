@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { PostsContext } from "@contexts/PostsContext";
 
 import Nav from "@components/Nav/Nav";
+import Article from "@components/Article/Article";
 import Reply from "@components/Reply/Reply";
 import PostsContainer from "@components/Post/PostsContainer";
 import Loading from "@components/Loading/Loading";
@@ -18,7 +19,8 @@ function App() {
 		<div className="app">
 			<Nav />
 			<main className="main">
-				{!from && data && <Reply handleReplyOrphan={reply} orphan />}
+				{!from && <Article />}
+				{!from && <Reply handleReplyOrphan={reply} orphan />}
 				{isLoading && <Loading />}
 				{error && (
 					<h2 className="main__error">could not connect to the server :(</h2>
