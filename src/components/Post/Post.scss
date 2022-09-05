@@ -174,4 +174,14 @@
 			color: $c-p-moderate-blue;
 		}
 	}
+
+	&__sticky {
+		position: absolute;
+		height: 2rem;
+		color: $c-p-soft-red;
+		bottom: 1ch;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		top: 0;
+	}
 }

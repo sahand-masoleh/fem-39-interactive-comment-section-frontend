@@ -19,6 +19,7 @@ import Continue from "./Continue";
 import Reply from "@components/Reply/Reply";
 
 import { ReactComponent as UpIcon } from "@assets/icon-up.svg";
+import { ReactComponent as StickyIcon } from "@assets/icon-sticky.svg";
 
 function Post({
 	id,
@@ -33,6 +34,7 @@ function Post({
 	votes,
 	replies,
 	is_edited,
+	is_sticky,
 	path,
 	is_up,
 }) {
@@ -90,6 +92,10 @@ function Post({
 				<div className="lines-container">{lineMap()}</div>
 
 				<div className={`post ${className}`} onAnimationEnd={onAnimationEnd}>
+					{is_sticky && (
+						<StickyIcon className="post__sticky" title="Sticky post" />
+					)}
+
 					{!isDeleted && (
 						<>
 							<Voting
