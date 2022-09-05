@@ -89,3 +89,32 @@
 		margin: 0;
 	}
 }
+
+.go-up-wrapper {
+	@include max-width;
+	width: 100%;
+	left: 50%;
+	transform: translateX(-50%);
+	position: fixed;
+	top: 0;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.go-up {
+	height: 2rem;
+	aspect-ratio: 1;
+	background-color: $c-n-very-light-gray;
+	box-sizing: content-box;
+	padding: 0.5rem;
+	border-bottom-left-radius: 0.5rem;
+	border: 2px solid $c-n-light-gray;
+	border-top: none;
+	border-right: none;
+	color: $c-p-light-grayish-blue;
+
+	&:hover {
+		cursor: pointer;
+		color: $c-p-moderate-blue;
+	}
+}

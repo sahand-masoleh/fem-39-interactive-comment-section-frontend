@@ -8,7 +8,7 @@
 .reply {
 	@include post;
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	gap: 1rem;
 	margin-top: 0.5rem;
 
@@ -23,7 +23,7 @@
 	}
 
 	&__avatar {
-		max-width: 3rem;
+		width: clamp(2rem, 10%, 3rem);
 
 		@media screen and (max-width: $break-point-2) {
 			display: none;

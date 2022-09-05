@@ -72,7 +72,6 @@ export function PostsContextProvider({ children }) {
 		);
 
 	const reply = useMutation(
-		// TODO: spinning wheel
 		async ({ parent_id, text }) => {
 			const url = new URL("posts", BASE);
 			let res = await fetch(url, {
@@ -144,7 +143,6 @@ export function PostsContextProvider({ children }) {
 		},
 		{
 			onSuccess: ({ id, text }) => {
-				// TODO: mark edited
 				queryClient.setQueriesData(["repoData"], (repo) => {
 					for (let page of repo.pages) {
 						const index = page.rows.findIndex((e) => e.id === id);

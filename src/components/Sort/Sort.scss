@@ -19,12 +19,6 @@
 
 	&__text {
 		color: $c-n-grayish-blue;
-
-		&--decor {
-			@media screen and (max-width: $break-point-3) {
-				// display: none;
-			}
-		}
 	}
 
 	&__button-container {

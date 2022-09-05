@@ -87,7 +87,10 @@
 		flex-wrap: wrap;
 		align-items: center;
 		gap: 1ch;
-		min-height: 2rem;
+	}
+
+	&__avatar {
+		height: 2rem;
 	}
 
 	&__name {
@@ -118,10 +121,10 @@
 		grid-area: action;
 		display: flex;
 		flex-wrap: wrap;
-		align-items: center;
-		min-height: 2rem;
+		align-items: flex-start;
 		gap: 1ch;
 		justify-content: flex-end;
+		margin-top: 0.5rem;
 
 		@media screen and (max-width: $break-point-1) {
 			height: unset;
