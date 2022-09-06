@@ -3,9 +3,9 @@ import { nanoid } from "nanoid";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const AuthContext = createContext();
-const CLIENT_ID = "61bd93401da3bfc14b01";
 
-import serverURL from "@utils/serverURL";
+import { serverURL, clientId } from "@utils/envDetector";
+const CLIENT_ID = clientId();
 const BASE = serverURL();
 
 export function AuthContextProvider({ children }) {
@@ -35,7 +35,7 @@ export function AuthContextProvider({ children }) {
 	const login = useMutation(
 		async (code) => {
 			const url = new URL("users/login", BASE);
-			const res = await fetch(url, {
+			let res = await fetch(url, {
 				method: "POST",
 				credentials: "include",
 				headers: {
@@ -44,7 +44,7 @@ export function AuthContextProvider({ children }) {
 				body: JSON.stringify({ code }),
 			});
 			if (res.status !== 200) throw new Error("authetication unsuccessful");
-			return res.json();
+			return true;
 		},
 		{
 			onSuccess: () => {
@@ -56,10 +56,12 @@ export function AuthContextProvider({ children }) {
 	const logout = useMutation(
 		async () => {
 			const url = new URL("users/logout", BASE);
-			const res = await fetch(url, {
+			let res = await fetch(url, {
+				credentials: "include",
 				method: "POST",
 			});
-			if (res.status !== 200) throw new Error("an error occured");
+			res = await res.json();
+			if (res.sucess === false) throw new Error("an error occured");
 			return null;
 		},
 		{
@@ -75,10 +77,11 @@ export function AuthContextProvider({ children }) {
 			state = nanoid(10);
 			sessionStorage.setItem("state", state);
 		}
-		const url = new URL(
-			`login/oauth/authorize?client_id=${CLIENT_ID}&state=${state}`,
-			"https://github.com"
-		);
+		const url = new URL(`login/oauth/authorize`, "https://github.com");
+		url.search = new URLSearchParams({
+			client_id: CLIENT_ID,
+			state,
+		});
 		return url;
 	}
 

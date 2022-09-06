@@ -12,7 +12,9 @@ function Article() {
 	useEffect(() => {
 		articleObserver.current.observe(articleRef.current);
 
-		return () => articleObserver.current.unobserve(articleRef.current);
+		return () =>
+			!articleRef.current ??
+			articleObserver.current.unobserve(articleRef.current);
 	}, []);
 
 	function handleIntersect(event) {

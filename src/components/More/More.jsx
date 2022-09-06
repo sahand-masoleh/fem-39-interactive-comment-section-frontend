@@ -14,8 +14,7 @@ function More({ onClick }) {
 		observer.current.observe(moreRef.current);
 
 		return () => {
-			// no need to unbserver since the component will unmount
-			// observer.current.unobserve(moreRef.current);
+			!observer.current ?? observer.current.unobserve(moreRef.current);
 			clearTimeout(timeoutRef.current);
 			clearInterval(intervalRef.current);
 		};

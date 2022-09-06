@@ -25,6 +25,10 @@ body,
 	height: 100%;
 }
 
+#root {
+	font-size: clamp(13px, 2.5vw, 16px);
+}
+
 body {
 	background-color: $c-n-very-light-gray;
 }
@@ -37,7 +41,8 @@ body {
 
 .main {
 	@include max-width;
-	padding-bottom: 3rem;
+	margin-bottom: 1rem;
+	margin-top: 1rem;
 
 	&__error {
 		padding: 1ch 0;

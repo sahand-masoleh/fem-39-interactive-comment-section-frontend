@@ -5,6 +5,10 @@ function Text({ text, is_edited, isEditing, isDeleted, handleSubmit }) {
 	const textareaRef = useRef();
 
 	useEffect(() => {
+		setEditedText(text);
+	}, [text]);
+
+	useEffect(() => {
 		if (isEditing) {
 			resize();
 		} else {

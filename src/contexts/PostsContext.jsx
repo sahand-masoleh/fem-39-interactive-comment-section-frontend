@@ -10,7 +10,7 @@ import { AuthContext } from "./AuthContext";
 
 export const PostsContext = createContext();
 
-import serverURL from "@utils/serverURL";
+import { serverURL } from "@utils/envDetector";
 const BASE = serverURL();
 
 export const OPTS = {
@@ -56,11 +56,12 @@ export function PostsContextProvider({ children }) {
 					page: pageParam,
 				});
 
-				const res = await fetch(url, {
+				let res = await fetch(url, {
 					credentials: "include",
 				});
-				if (res.status !== 200) throw new Error("could not fetch");
-				return await res.json();
+				res = res.json();
+				if (res.success === false) throw new Error("could not fetch");
+				return res;
 			},
 			{
 				enabled: !!user || user === null,

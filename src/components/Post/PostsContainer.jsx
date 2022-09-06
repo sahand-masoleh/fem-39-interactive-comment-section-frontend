@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { useParams } from "react-router-dom";
 import { PostsContext } from "@contexts/PostsContext";
-import Sort from "@components/Sort/Sort";
 import Back from "@components/Back/Back";
 import Post from "@components/Post/Post";
 import More from "@components/More/More";
@@ -12,7 +11,6 @@ function PostsContainer() {
 
 	return (
 		<div className="posts-container">
-			<Sort />
 			{from && <Back />}
 			{postMap(data, from)}
 			{hasNextPage && <More onClick={fetchNextPage} />}
