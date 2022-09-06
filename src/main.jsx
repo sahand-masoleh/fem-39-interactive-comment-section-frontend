@@ -33,7 +33,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 						</Route>
 					</Routes>
 				</BrowserRouter>
-				<ReactQueryDevtools />
+				{/* <ReactQueryDevtools /> */}
 			</QueryClientProvider>
 		</ErrorBoundary>
 	</React.StrictMode>

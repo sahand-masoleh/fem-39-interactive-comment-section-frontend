@@ -60,8 +60,7 @@ export function AuthContextProvider({ children }) {
 				credentials: "include",
 				method: "POST",
 			});
-			res = await res.json();
-			if (res.sucess === false) throw new Error("an error occured");
+			if (res.status !== 200) throw new Error("an error occured");
 			return null;
 		},
 		{

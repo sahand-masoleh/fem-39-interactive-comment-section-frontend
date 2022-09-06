@@ -1,6 +1,6 @@
 import "./Post.scss";
 
-import { useContext } from "react";
+import { useContext, useRef } from "react";
 
 import {
 	HiddenContext,
@@ -51,6 +51,7 @@ function Post({
 	const { user } = useContext(AuthContext);
 	const isCurrentUser = user_id === user?.id;
 	const isOP = user_id === 80;
+	const isDeleted = user_id === 1;
 
 	const {
 		state,
@@ -61,7 +62,8 @@ function Post({
 		handleRemoveVote,
 	} = useActions(id);
 
-	const isDeleted = user_id === 1;
+	const touchStart = replies ? useRef(null) : null;
+	const touchTimer = replies ? useRef(null) : null;
 
 	function goToParent() {
 		document
@@ -86,12 +88,34 @@ function Post({
 		if (event.animationName === "close") handleClose(null);
 	}
 
+	function handleTouch(event) {
+		const { type, timeStamp } = event;
+		if (type === "touchstart") {
+			touchStart.current = timeStamp;
+			touchTimer.current = setTimeout(() => {
+				handleHide(id, true);
+				handleFocus(id);
+			}, 999);
+		} else if (
+			(touchStart.current || touchTimer.current.start) &&
+			type === "touchend"
+		) {
+			touchStart.current = null;
+			clearTimeout(touchTimer.current);
+		}
+	}
+
 	if (!isHidden)
 		return (
 			<div id={id} className="post-wrapper">
 				<div className="lines-container">{lineMap()}</div>
 
-				<div className={`post ${className}`} onAnimationEnd={onAnimationEnd}>
+				<div
+					className={`post ${className}`}
+					onAnimationEnd={onAnimationEnd}
+					onTouchStart={replies ? handleTouch : null}
+					onTouchEnd={replies ? handleTouch : null}
+				>
 					{is_sticky && (
 						<StickyIcon className="post__sticky" title="Sticky post" />
 					)}
