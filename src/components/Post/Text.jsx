@@ -35,6 +35,7 @@ function Text({ text, is_edited, isEditing, isDeleted, handleSubmit }) {
 					onChange={handleTextEdit}
 					ref={textareaRef}
 					onInput={resize}
+					aria-label="edit post"
 				/>
 				<button
 					className="post__button button button--confirm"

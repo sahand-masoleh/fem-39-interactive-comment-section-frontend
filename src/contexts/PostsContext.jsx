@@ -7,6 +7,7 @@ import {
 import { useSearchParams, useParams } from "react-router-dom";
 
 import { AuthContext } from "./AuthContext";
+import { ToastContext, TOAST_MESSAGE } from "./ToastContext";
 
 export const PostsContext = createContext();
 
@@ -24,6 +25,7 @@ export function PostsContextProvider({ children }) {
 	const [searchParams, setSearchParams] = useSearchParams();
 	const queryClient = useQueryClient();
 	const { user } = useContext(AuthContext);
+	const { showToast } = useContext(ToastContext);
 	const [params, setParams] = useState({
 		from: 0,
 		sort_by: searchParams.get("sort_by") ?? OPTS.DATE,
@@ -88,9 +90,10 @@ export function PostsContextProvider({ children }) {
 			return res;
 		},
 		{
-			onSuccess: ({ parent_id, ...row }) => {
+			onSuccess: ({ id, parent_id, ...row }) => {
 				const newPost = {
 					...row,
+					id,
 					parent_id,
 					name: user.name,
 					avatar_url: user.avatar_url,
@@ -122,6 +125,7 @@ export function PostsContextProvider({ children }) {
 					});
 				} else {
 					queryClient.invalidateQueries(["repoData"]);
+					showToast(TOAST_MESSAGE.POSTED);
 				}
 			},
 		}

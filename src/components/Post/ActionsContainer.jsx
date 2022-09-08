@@ -37,7 +37,7 @@ function Action({ name, Icon, onClick, isSecondary = false }) {
 			onClick={onClick}
 		>
 			<Icon title={name} className="action__icon" />
-			<p className="action__label">{name}</p>
+			<span className="action__label">{name}</span>
 		</button>
 	);
 }

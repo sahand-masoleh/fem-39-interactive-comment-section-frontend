@@ -31,7 +31,7 @@ function Article() {
 				<p className="article__text">
 					This is my solution to the{" "}
 					<a
-						href="https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9/hub/interactive-comments-section-CnRm2ZaEuO"
+						href="https://www.frontendmentor.io/challenges/interactive-comments-section-iG1RugEG9"
 						className="article__link"
 					>
 						"Interactive Comment Section"
@@ -60,18 +60,18 @@ function Article() {
 					<li className="list__item">
 						<h3 className="list__title">Sorting:</h3>
 						<p className="list__text">
-							Based on date or score, ascending or descending.
+							Based on date or score, ascending or descending
 						</p>
 					</li>
 					<li className="list__item">
 						<h3 className="list__title">Pagination:</h3>
 						<p className="list__text">
-							Data is queried gradually from the database.
+							Data is queried gradually from the database
 						</p>
 					</li>
 					<li className="list__item">
 						<h3 className="list__title">Authentication:</h3>
-						<p className="list__text">Using Github's Auth0.</p>
+						<p className="list__text">Using Github's Auth0</p>
 					</li>
 				</ul>
 

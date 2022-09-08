@@ -93,30 +93,29 @@
 }
 
 .go-up-wrapper {
-	@include max-width;
+	@include max-width();
 	width: 100%;
 	left: 50%;
 	transform: translateX(-50%);
 	position: fixed;
-	top: 0;
+	top: 1rem;
 	display: flex;
 	justify-content: flex-end;
 }
 
 .go-up {
-	height: 2rem;
+	margin: 0 auto;
+	height: 3rem;
 	aspect-ratio: 1;
-	background-color: $c-n-very-light-gray;
-	box-sizing: content-box;
+	background-color: $c-n-grayish-blue;
 	padding: 0.5rem;
-	border-bottom-left-radius: 0.5rem;
-	border: 2px solid $c-n-light-gray;
-	border-top: none;
-	border-right: none;
-	color: $c-n-grayish-blue;
+	border-radius: 50%;
+	border: none;
+	color: $c-n-light-gray;
+	mix-blend-mode: overlay;
 
 	&:hover {
 		cursor: pointer;
-		color: $c-n-light-gray;
+		background-color: $c-n-dark-blue;
 	}
 }

@@ -61,6 +61,7 @@ function Reply({ handleReply, handleReplyOrphan, orphan }) {
 					value={input}
 					onChange={handleTextEdit}
 					ref={textareaRef}
+					aria-label="reply to post"
 				/>
 				<button
 					className="reply__button button button--confirm"

@@ -39,7 +39,7 @@ function Info({ name, avatarUrl, url, date, isCurrentUser, isOP }) {
 				<span className="post__you">OP</span>
 			) : null}
 			<span className="post__date">{timeAgo.format(new Date(date))}</span>
-			<a href={url} ref={aRef} target="_blank" hidden></a>
+			{url && <a href={url} ref={aRef} target="_blank" hidden></a>}
 		</div>
 	);
 }

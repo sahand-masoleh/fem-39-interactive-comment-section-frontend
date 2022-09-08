@@ -1,10 +1,12 @@
 import "./Toast.scss";
 import { createPortal } from "react-dom";
 
-function Toast({ message, disapearing, onAnimationEnd }) {
+function Toast({ message, disapearing, onAnimationEnd, type }) {
 	return createPortal(
 		<div
-			className={`toast ${disapearing ? "toast--disapearing" : ""}`}
+			className={`toast toast--${type} ${
+				disapearing ? "toast--disapearing" : ""
+			}`}
 			onAnimationEnd={onAnimationEnd}
 		>
 			{message}
